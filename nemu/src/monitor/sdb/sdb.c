@@ -129,7 +129,7 @@ static int cmd_info(char* args){
     }
     else{
       /* invalid argument */
-      printf("Invalid argument\n");
+      printf("Invalid argument '%s'\n", arg);
     }
   }
   return 0;
