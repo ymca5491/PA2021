@@ -43,6 +43,8 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -55,6 +57,7 @@ static struct {
   /* TODO: Add more commands */
 
   {"si", "Execute the next N instrcutins", cmd_si },
+  {"info", "Print the status of program", cmd_info},
 
 };
 
@@ -103,6 +106,31 @@ static int cmd_si(char *args){
       }
     }
     cpu_exec(i);
+  }
+  return 0;
+}
+
+static int cmd_info(char* args){
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+
+  if(arg == NULL){
+    /* no argument given */
+    printf("Unvalid command for no argument is given");
+  }
+  else{
+    if(strcmp(arg, "r")){
+      /* print the status of registers */
+      isa_reg_display();
+    }
+    else if(strcmp(arg, "w")){
+      /* print the information of watch points */
+      printf("Not implemented yet");
+    }
+    else{
+      /* invalid argument */
+      printf("Invalid argument");
+    }
   }
   return 0;
 }
