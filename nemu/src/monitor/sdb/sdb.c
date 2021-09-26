@@ -119,17 +119,17 @@ static int cmd_info(char* args){
     printf("Unvalid command for no argument is given");
   }
   else{
-    if(strcmp(arg, "r")){
+    if(strcmp(arg, "r") == 0){
       /* print the status of registers */
       isa_reg_display();
     }
-    else if(strcmp(arg, "w")){
+    else if(strcmp(arg, "w") == 0){
       /* print the information of watch points */
-      printf("Not implemented yet");
+      printf("Not implemented yet\n");
     }
     else{
       /* invalid argument */
-      printf("Invalid argument");
+      printf("Invalid argument\n");
     }
   }
   return 0;
