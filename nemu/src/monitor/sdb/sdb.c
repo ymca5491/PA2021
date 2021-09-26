@@ -4,6 +4,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 #include <utils.h>
+#include <ctype.h>
 
 static int is_batch_mode = false;
 
@@ -40,7 +41,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
-//static int cmd_si(char *args);
+static int cmd_si(char *args);
 
 static struct {
   const char *name;
@@ -53,7 +54,7 @@ static struct {
 
   /* TODO: Add more commands */
 
-  //{"si", "Execute the next N instrcutins", cmd_si},
+  {"si", "Execute the next N instrcutins", cmd_si },
 
 };
 
@@ -78,6 +79,30 @@ static int cmd_help(char *args) {
       }
     }
     printf("Unknown command '%s'\n", arg);
+  }
+  return 0;
+}
+
+static int cmd_si(char *args){
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  int i = 0;
+
+  if(arg == NULL){
+    /* no argument given */
+    cpu_exec(1);
+  }
+  else{
+    for(int j = 0; j < strlen(arg); j++){
+      if(isdigit(arg[j])){
+        i = 10 * i + arg[j] - '0';
+      }
+      else{
+        printf("Not a valid argument\n");
+        return 0;
+      }
+    }
+    cpu_exec(i);
   }
   return 0;
 }
