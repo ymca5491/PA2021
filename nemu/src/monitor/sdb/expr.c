@@ -91,6 +91,7 @@ static bool make_token(char *e) {
             nr_token++;
             break;
           case TK_OCTAL:
+            if (substr_len > 31) {puts("Too long numbers not supported"); break;}
             strncpy(tokens[nr_token].str, substr_start, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             nr_token++;
