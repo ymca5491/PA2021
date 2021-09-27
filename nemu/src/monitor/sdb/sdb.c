@@ -5,6 +5,7 @@
 #include "sdb.h"
 #include <utils.h>
 #include <ctype.h>
+#include <memory/paddr.h>
 
 static int is_batch_mode = false;
 
@@ -45,6 +46,8 @@ static int cmd_si(char *args);
 
 static int cmd_info(char *args);
 
+static int cmd_x(char* args);
+
 static struct {
   const char *name;
   const char *description;
@@ -58,6 +61,7 @@ static struct {
 
   {"si", "Execute the next N instrcutins", cmd_si },
   {"info", "Print the status of program", cmd_info},
+  {"x", "Print the next N 4-bytes of the input address", cmd_x},
 
 };
 
@@ -134,6 +138,32 @@ static int cmd_info(char* args){
   }
   return 0;
 }
+
+static int cmd_x(char* args){
+  /* extract the first argument */
+  char *arg1 = strtok(NULL, " ");
+  char *arg2 = strtok(NULL, " ");
+    
+  if(arg1 == NULL || arg2 == NULL){
+    /* no argument given */
+    printf("Unvalid command for no argument is given");
+  }
+  else{
+    int n;
+    paddr_t addr;
+    sscanf(arg1, "%d", &n);
+    sscanf(arg2, "0x%x", &addr);
+    int i;
+    word_t value;
+    for(i = 0; i < n; i++){
+      value = paddr_read(addr, 4);
+      printf("<0x%8x>:       %8x", addr, value);
+      value += 4;
+    }
+  }
+  return 0;
+}
+
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
