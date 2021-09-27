@@ -29,7 +29,7 @@ static struct rule {
   {"\\/", '/'},         // divide
   {"\\(", '('},         // left bracket
   {"\\)", ')'},         // right bracket
-  {"*(?!0)", TK_OCTAL},// octal numbers
+  {"\\d+", TK_OCTAL},   // octal numbers
 };
 
 #define NR_REGEX ARRLEN(rules)
