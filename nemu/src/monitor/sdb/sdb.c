@@ -90,7 +90,7 @@ static int cmd_help(char *args) {
   return 0;
 }
 
-static int cmd_si(char *args){
+static int cmd_si(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i = 0;
@@ -114,7 +114,7 @@ static int cmd_si(char *args){
   return 0;
 }
 
-static int cmd_info(char* args){
+static int cmd_info(char* args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
 
@@ -139,7 +139,7 @@ static int cmd_info(char* args){
   return 0;
 }
 
-static int cmd_x(char* args){
+static int cmd_x(char* args) {
   /* extract the first argument */
   char *arg1 = strtok(NULL, " ");
   char *arg2 = strtok(NULL, " ");
@@ -155,6 +155,7 @@ static int cmd_x(char* args){
     sscanf(arg2, "0x%x", &addr);
     int i;
     word_t value;
+    /* print each byte in storage order */
     for(i = 0; i < n; i++){
       value = paddr_read(addr, 1);
       printf("0x%8x:    %02x", addr, value);
