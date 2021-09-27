@@ -157,13 +157,13 @@ static int cmd_x(char* args){
     word_t value;
     for(i = 0; i < n; i++){
       value = paddr_read(addr, 1);
-      printf("0x%8x:    0x%02x", addr, value);
+      printf("0x%8x:    %02x", addr, value);
       value = paddr_read(addr + 1, 1);
-      printf(" 0x%02x", value);
+      printf(" %02x", value);
       value = paddr_read(addr + 2, 1);
-      printf(" 0x%02x", value);
+      printf(" %02x", value);
       value = paddr_read(addr + 3, 1);
-      printf(" 0x%02x", value);
+      printf(" %02x\n", value);
       addr += 4;
     }
   }
