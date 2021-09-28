@@ -178,7 +178,7 @@ static int cmd_p(char* args) {
   bool success;
   word_t value = expr(args, &success);
   if (success){
-    printf("%d\n", value);
+    printf("%u\n", value);
     return 0;
   }
   else {
