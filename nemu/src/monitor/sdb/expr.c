@@ -197,6 +197,7 @@ uint find_main_op(uint p, uint q, bool *success) {
       }
       else if (tokens[i].type == '&'){
         /* and */
+        *success = true;
         return i; // max priority
       }
       else if (tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ){
@@ -269,11 +270,11 @@ word_t eval(uint p, uint q, bool *success) {
     return eval(p + 1, q - 1, success);
   }
   else {
-    bool *find_success = NULL, *success1 = NULL, *success2 = NULL;
-    uint op = find_main_op(p, q, find_success);
+    bool find_success, success1, success2;
+    uint op = find_main_op(p, q, &find_success);
     if (tokens[op].type == TK_DEREF){
-      word_t addr = eval(op + 1, q, success1);
-      *success = *find_success && *success1;
+      word_t addr = eval(op + 1, q, &success1);
+      *success = find_success && success1;
       if (*success){
         return paddr_read(addr, 4);
       }
@@ -282,9 +283,9 @@ word_t eval(uint p, uint q, bool *success) {
       }
     }
     else {
-      word_t val1 = eval(p, op - 1, success1);
-      word_t val2 = eval(op + 1, q, success2);
-      *success = *find_success && *success1 && *success2;
+      word_t val1 = eval(p, op - 1, &success1);
+      word_t val2 = eval(op + 1, q, &success2);
+      *success = find_success && success1 && success2;
       if (*success){
         switch (tokens[op].type) {
           case '+': return val1 + val2;
