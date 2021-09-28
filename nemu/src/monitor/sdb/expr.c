@@ -32,7 +32,7 @@ static struct rule {
   {"&&", '&'},          // and
   {"\\(", '('},         // left bracket
   {"\\)", ')'},         // right bracket
-  {"0x[0-9]+", TK_HEX},   // hexadecimal
+  {"0x[0-9a-zA-Z]+", TK_HEX},   // hexadecimal
   {"[0-9]+", TK_DEC},     // decimal numbers
   {"\\$\\w{1,3}", TK_REG} // value of register
 };
