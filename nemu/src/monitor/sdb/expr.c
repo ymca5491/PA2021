@@ -98,6 +98,7 @@ static bool make_token(char *e) {
             break;
           case TK_DEC: case TK_HEX: case TK_REG:
             if (substr_len > 31) {puts("Too long numbers not supported"); break;}
+            tokens[nr_token].type = rules[i].token_type;
             strncpy(tokens[nr_token].str, substr_start, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             nr_token++;
