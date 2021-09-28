@@ -6,7 +6,8 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_OCTAL
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_REG,
+  TK_DEREF, TK_DEC, TK_HEX,
 
   /* TODO: Add more token types */
 
@@ -22,14 +23,18 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},       // unequal
+  {"\\+", '+'},         // plus
   {"-", '-'},           // minus
   {"\\*", '*'},         // multiply
   {"\\/", '/'},         // divide
+  {"&&", '&'},          // and
   {"\\(", '('},         // left bracket
   {"\\)", ')'},         // right bracket
-  {"\\d+", TK_OCTAL},   // octal numbers
+  {"0x\\d+", TK_HEX},   // hexadecimal
+  {"\\d+", TK_DEC},     // decimal numbers
+  {"\\$\\w{1,3}", TK_REG} // value of register
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -87,16 +92,17 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case '+': case '-': case '*': case '/': case '(': case ')':
+          case '&': case TK_EQ: case TK_NEQ:
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
-          case TK_OCTAL:
+          case TK_DEC: case TK_HEX: case TK_REG:
             if (substr_len > 31) {puts("Too long numbers not supported"); break;}
             strncpy(tokens[nr_token].str, substr_start, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             nr_token++;
             break;
-          case TK_NOTYPE:
+          case TK_NOTYPE: break;
           default: TODO();
         }
 
@@ -113,6 +119,7 @@ static bool make_token(char *e) {
   return true;
 }
 
+word_t eval(uint p, uint q, bool *success);
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -121,7 +128,178 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  return eval(0, nr_token - 1, success);
+}
 
-  return 0;
+
+bool chech_parenttheses(uint p, uint q) {
+  uint i;
+  if (tokens[p].type != '(' || tokens[q].type != ')') 
+    return false;     // not started with a '(' or ended with a ')'
+  else{
+    int count = 0;
+    for (i = p; i <= q; i++) {
+      if (tokens[i].type == '(') count++;
+      else if (tokens[i].type == ')') count--;
+
+      if (count < 0) return false;
+    }
+    if (count != 0) return false; else return true;
+  }
+}
+
+uint find_main_op(uint p, uint q, bool *success) {
+  int bracket_count = 0;
+  bool exist_eq = false;
+  bool exist_plusminus = false;
+  bool exist_muldiv = false;
+  uint op;
+
+  *success = false;
+  /* scanning */
+  for (uint i = p; i <= q; i++) {
+    /* if in brackets */
+    if (tokens[i].type == '(') {
+      bracket_count++;
+      continue;
+    }
+    else if (tokens[i].type == ')') {
+      bracket_count--;
+      continue;
+    }
+    if (bracket_count < 0) {
+      *success = false;
+      return 0;
+    }
+
+    /* not in a bracket */
+    if (bracket_count == 0){
+
+      if (tokens[i].type == '*') {
+        /* '*' */
+        if (i == p || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' ||
+          tokens[i - 1].type == '*' || tokens[i - 1].type == '/' || 
+          tokens[i - 1].type == '&' || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
+        ){
+          tokens[i].type = TK_DEREF;
+          if (!exist_eq && !exist_plusminus && !exist_muldiv) {
+            op = i;
+            *success = true;
+          }
+        }
+        else{
+          if (!exist_eq && !exist_plusminus){
+            exist_muldiv = true;
+            op = i;
+            *success = true;
+          }
+        }
+      }
+      else if (tokens[i].type == '&'){
+        /* and */
+        return i; // max priority
+      }
+      else if (tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ){
+        /* == or != */
+        exist_eq = true;
+        op = i;
+        *success = true;
+      }
+      else if((tokens[i].type == '+' || tokens[i].type == '-') && !exist_eq){
+        /* '+' or '-' */
+        exist_plusminus = true;
+        op = i;
+        *success = true;
+      }
+      else if(tokens[i].type == '/' && !exist_eq && !exist_plusminus){
+        /* '/' */
+        exist_muldiv = true;
+        op = i;
+        *success = true;
+      }
+      else {
+        /* deref or reg */
+        if (!exist_eq && !exist_plusminus && !exist_muldiv) {
+          op = i;
+          *success = true;
+        }
+      }
+    }
+  }
+
+  /* result */
+  if (*success) return op;
+  else return 0;
+
+}
+
+
+word_t eval(uint p, uint q, bool *success) {
+  if (p > q) {
+    /* Bad expression */
+    Log("Bad expression");
+    *success = false;
+  }
+  else if (p == q) {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+    word_t num;
+
+    if (tokens[p].type == TK_DEC) {
+      sscanf(tokens[p].str, "%d", &num);
+      *success = true;
+    }
+    else if (tokens[p].type == TK_HEX){
+      sscanf(tokens[p].str, "0x%x", &num);
+      *success = true;
+    }
+    else {
+      /* register */
+      num = isa_reg_str2val(tokens[p].str + 1, success);
+    }
+    
+    return num;
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1, success);
+  }
+  else {
+    bool *find_success, *success1, *success2;
+    uint op = find_main_op(p, q, find_success);
+    if (tokens[op].type == TK_DEREF){
+      word_t addr = eval(op + 1, q, success1);
+      *success = *find_success && *success1;
+      if (*success){
+        return paddr_read(addr, 4);
+      }
+      else{
+        return 0;
+      }
+    }
+    else {
+      word_t val1 = eval(p, op - 1, success1);
+      word_t val2 = eval(op + 1, q, success2);
+      *success = *find_success && *success1 && *success2;
+      if (*success){
+        switch (tokens[op].type) {
+          case '+': return val1 + val2;
+          case '-': return val1 - val2;
+          case '*': return val1 * val2;
+          case '/': return val1 / val2;
+          case '&': return val1 && val2;
+          case TK_EQ: return val1 == val2;
+          case TK_NEQ: return val1 != val2;
+          default: Assert(0);
+        }
+      }
+      else{
+        return 0;
+      }
+    }
+  }
 }

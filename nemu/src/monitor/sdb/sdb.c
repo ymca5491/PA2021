@@ -48,6 +48,8 @@ static int cmd_info(char *args);
 
 static int cmd_x(char* args);
 
+static int cmd_p(char* args);
+
 static struct {
   const char *name;
   const char *description;
@@ -62,6 +64,7 @@ static struct {
   {"si", "Execute the next N instrcutins", cmd_si },
   {"info", "Print the status of program", cmd_info},
   {"x", "Print the next N 4-bytes of the input address", cmd_x},
+  {"p", "Print the value of the expression", cmd_p},
 
 };
 
@@ -171,6 +174,18 @@ static int cmd_x(char* args) {
   return 0;
 }
 
+static int cmd_p(char* args) {
+  bool *success;
+  word_t value = expr(args, success);
+  if (*success){
+    printf("%d\n", value);
+    return 0;
+  }
+  else {
+    printf("Not a valid expression\n");
+    return 0;
+  }
+}
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
