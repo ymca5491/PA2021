@@ -175,7 +175,7 @@ static int cmd_x(char* args) {
 }
 
 static int cmd_p(char* args) {
-  bool *success;
+  bool *success = NULL;
   word_t value = expr(args, success);
   if (*success){
     printf("%d\n", value);

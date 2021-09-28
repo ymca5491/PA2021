@@ -1,5 +1,5 @@
 #include <isa.h>
-
+#include <memory/paddr.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -132,7 +132,7 @@ word_t expr(char *e, bool *success) {
 }
 
 
-bool chech_parenttheses(uint p, uint q) {
+bool check_parentheses(uint p, uint q) {
   uint i;
   if (tokens[p].type != '(' || tokens[q].type != ')') 
     return false;     // not started with a '(' or ended with a ')'
@@ -153,7 +153,7 @@ uint find_main_op(uint p, uint q, bool *success) {
   bool exist_eq = false;
   bool exist_plusminus = false;
   bool exist_muldiv = false;
-  uint op;
+  unsigned int op = 0;
 
   *success = false;
   /* scanning */
@@ -233,12 +233,14 @@ uint find_main_op(uint p, uint q, bool *success) {
 
 }
 
+bool *find_success, *success1, *success2;
 
 word_t eval(uint p, uint q, bool *success) {
   if (p > q) {
     /* Bad expression */
     Log("Bad expression");
     *success = false;
+    return 0;
   }
   else if (p == q) {
     /* Single token.
@@ -269,7 +271,6 @@ word_t eval(uint p, uint q, bool *success) {
     return eval(p + 1, q - 1, success);
   }
   else {
-    bool *find_success, *success1, *success2;
     uint op = find_main_op(p, q, find_success);
     if (tokens[op].type == TK_DEREF){
       word_t addr = eval(op + 1, q, success1);
@@ -294,7 +295,7 @@ word_t eval(uint p, uint q, bool *success) {
           case '&': return val1 && val2;
           case TK_EQ: return val1 == val2;
           case TK_NEQ: return val1 != val2;
-          default: Assert(0);
+          default: assert(0);
         }
       }
       else{
