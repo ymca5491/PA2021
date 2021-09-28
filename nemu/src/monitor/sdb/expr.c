@@ -233,8 +233,6 @@ uint find_main_op(uint p, uint q, bool *success) {
 
 }
 
-bool *find_success, *success1, *success2;
-
 word_t eval(uint p, uint q, bool *success) {
   if (p > q) {
     /* Bad expression */
@@ -271,6 +269,7 @@ word_t eval(uint p, uint q, bool *success) {
     return eval(p + 1, q - 1, success);
   }
   else {
+    bool *find_success = NULL, *success1 = NULL, *success2 = NULL;
     uint op = find_main_op(p, q, find_success);
     if (tokens[op].type == TK_DEREF){
       word_t addr = eval(op + 1, q, success1);
