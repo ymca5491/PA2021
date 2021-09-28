@@ -260,6 +260,7 @@ word_t eval(uint p, uint q, bool *success) {
     else {
       /* register */
       num = isa_reg_str2val(tokens[p].str + 1, success);
+      *success = true;
     }
     
     return num;
