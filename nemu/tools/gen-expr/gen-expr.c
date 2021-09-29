@@ -4,9 +4,9 @@
 #include <time.h>
 #include <assert.h>
 #include <string.h>
-
+#include <stdbool.h>
 // this should be enough
-static char buf[65536] = {};
+static char buf[65536] = {'\0'};
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -17,16 +17,20 @@ static char *code_format =
 "}";
 
 static void gen(char* s);
-static void gen_num(bool zf);
-static bool gen_rand_op();
+static void gen_num();
+static void gen_rand_op();
 static char* op[] = {"+", "-", "*", "/"};
 
-static void gen_rand_expr() {
-  buf[0] = '\0';
-  switch (choose(3)) {
-    case 0: gen_num(); break;
-    case 1: gen("("); gen_rand_expr(); gen(")"); break;
-    default: gen_rand_expr(); gen_rand_expr(gen_rand_op()); break;
+uint32_t choose(uint32_t n) {
+  return rand() % n;
+}
+
+static void gen_rand_expr(bool initialize) {
+  if (initialize) buf[0] = '\0';
+  switch (choose(7)) {
+    case 0: case 1: case 2: gen_num(); break;
+    case 3: case 4: gen("("); gen_rand_expr(false); gen(")"); break;
+    default: gen_rand_expr(false); gen_rand_op(); gen_rand_expr(false); break;
   }
 }
 
@@ -34,17 +38,17 @@ static void gen(char* s) {
   strcat(buf, s);
 }
 
-static void gen_num(bool div) {
+static void gen_num() {
   int32_t rnd;
-  if (zf)  rnd= choose(INT32_MAX - 1) + 1;
-  else rnd= choose(INT32_MAX);
-  sprintf(buf, strcat(buf, "%u"), rnd);
+  rnd= choose(1000);
+  char temp[32] = {};
+  sprintf(temp, "%u", rnd);
+  strcat(buf, temp);
 }
 
-static bool gen_rand_op() {
+static void gen_rand_op() {
   char* rand_op = op[choose(4)];
   strcat(buf, rand_op);
-  if (rand_op[0] == '/') return true; else return false; 
 }
 
 int main(int argc, char *argv[]) {
@@ -56,7 +60,7 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
-    gen_rand_expr();
+    gen_rand_expr(true);
 
     sprintf(code_buf, code_format, buf);
 
@@ -65,14 +69,15 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc -Werror /tmp/.code.c -o /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
 
     int result;
-    fscanf(fp, "%d", &result);
+    int t = fscanf(fp, "%d", &result);
+    t = t;          // avoid unused error
     pclose(fp);
 
     printf("%u %s\n", result, buf);

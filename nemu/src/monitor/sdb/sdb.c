@@ -50,6 +50,8 @@ static int cmd_x(char* args);
 
 static int cmd_p(char* args);
 
+static int cmd_exprtest(char* args);
+
 static struct {
   const char *name;
   const char *description;
@@ -65,6 +67,7 @@ static struct {
   {"info", "Print the status of program", cmd_info},
   {"x", "Print the next N 4-bytes of the input address", cmd_x},
   {"p", "Print the value of the expression", cmd_p},
+  {"exprtest", "To test the correctness of command p", cmd_exprtest},
 
 };
 
@@ -185,6 +188,35 @@ static int cmd_p(char* args) {
     printf("Not a valid expression\n");
     return 0;
   }
+}
+
+static int cmd_exprtest(char* args) {
+  FILE* input = fopen(args, "r");
+  char line[512] = {};
+  int try_count = 0;
+  int error_count = 0;
+
+  while(fgets(line, 512, input) != NULL) {
+    try_count++;
+    char* t_res_s = strtok(line, " ");
+    char* t_expr = strtok(NULL, " ");
+    bool success;
+
+    word_t res = expr(t_expr, &success);
+    word_t t_res;
+    sscanf(t_res_s, "%u", &t_res);
+
+    if (success && (res == t_res)) {
+      printf("%d times: Correct\n", try_count);
+    }
+    else {
+      error_count++;
+      printf("%d times: Error\n", try_count);
+      printf("Expression:%s\n given_result:%u\tnemu_result:%u\n", t_expr, t_res, res);
+    }
+  }
+  printf("Total: %d errors\n", error_count);
+  return 0;
 }
 
 void sdb_set_batch_mode() {
