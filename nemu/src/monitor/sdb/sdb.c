@@ -204,7 +204,7 @@ static int cmd_exprtest(char* args) {
     char* t_expr = strtok(NULL, " ");
     bool success;
 
-    printf("%s\n%s", t_res_s, t_expr);
+    //printf("%s\n%s", t_res_s, t_expr);
 
     word_t res = expr(t_expr, &success);
     word_t t_res;
