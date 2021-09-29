@@ -192,7 +192,7 @@ static int cmd_p(char* args) {
 
 static int cmd_exprtest(char* args) {
   FILE* input = fopen("tools/gen-expr/input", "r");
-  char line[512] = {};
+  char line[1024] = {};
   int try_count = 0;
   int error_count = 0;
 
