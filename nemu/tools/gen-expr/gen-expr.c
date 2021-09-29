@@ -27,9 +27,9 @@ uint32_t choose(uint32_t n) {
 
 static void gen_rand_expr(bool initialize) {
   if (initialize) buf[0] = '\0';
-  switch (choose(7)) {
-    case 0: case 1: case 2: gen_num(); break;
-    case 3: case 4: gen("("); gen_rand_expr(false); gen(")"); break;
+  switch (choose(4)) {
+    case 0: case 1: gen_num(); break;
+    case 2: gen("("); gen_rand_expr(false); gen(")"); break;
     default: gen_rand_expr(false); gen_rand_op(); gen_rand_expr(false); break;
   }
 }
@@ -61,8 +61,7 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     gen_rand_expr(true);
-    if(strlen(buf) >= 31) {
-      i--;
+    if(strlen(buf) > 31) {
       continue;
     }
     sprintf(code_buf, code_format, buf);
@@ -73,7 +72,7 @@ int main(int argc, char *argv[]) {
     fclose(fp);
 
     int ret = system("gcc -Werror /tmp/.code.c -o /tmp/.expr");
-    if (ret != 0) continue;
+    if (ret != 0) { continue; }
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
