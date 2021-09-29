@@ -143,7 +143,7 @@ bool check_parentheses(uint p, uint q) {
       if (tokens[i].type == '(') count++;
       else if (tokens[i].type == ')') count--;
 
-      if (count < 0) return false;
+      if (i != q && count <= 0) return false;
     }
     if (count != 0) return false; else return true;
   }
