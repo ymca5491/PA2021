@@ -199,11 +199,12 @@ static int cmd_exprtest(char* args) {
 
   while(fgets(line, 512, input) != NULL) {
     try_count++;
+    printf("%s", line);
     char* t_res_s = strtok(line, " ");
     char* t_expr = strtok(NULL, " ");
     bool success;
 
-    printf("%s\n%s\n%s", line, t_res_s, t_expr);
+    printf("%s\n%s", t_res_s, t_expr);
 
     word_t res = expr(t_expr, &success);
     word_t t_res;
