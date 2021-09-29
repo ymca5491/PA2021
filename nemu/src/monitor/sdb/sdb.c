@@ -191,6 +191,7 @@ static int cmd_p(char* args) {
 }
 
 static int cmd_exprtest(char* args) {
+
   FILE* input = fopen("tools/gen-expr/input", "r");
   char line[1024] = {};
   int try_count = 0;
@@ -202,7 +203,7 @@ static int cmd_exprtest(char* args) {
     char* t_expr = strtok(NULL, " ");
     bool success;
 
-    printf("%s\n%s\n", t_res_s, t_expr);
+    printf("line\n%s\n%s", t_res_s, t_expr);
 
     word_t res = expr(t_expr, &success);
     word_t t_res;
