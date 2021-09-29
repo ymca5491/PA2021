@@ -182,6 +182,7 @@ uint find_main_op(uint p, uint q, bool *success) {
           tokens[i - 1].type == '*' || tokens[i - 1].type == '/' || 
           tokens[i - 1].type == '&' || tokens[i - 1].type == TK_EQ || tokens[i - 1].type == TK_NEQ
         ){
+          /* DEREF */
           tokens[i].type = TK_DEREF;
           if (!exist_eq && !exist_plusminus && !exist_muldiv) {
             op = i;

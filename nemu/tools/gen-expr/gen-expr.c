@@ -16,8 +16,35 @@ static char *code_format =
 "  return 0; "
 "}";
 
+static void gen(char* s);
+static void gen_num(bool zf);
+static bool gen_rand_op();
+static char* op[] = {"+", "-", "*", "/"};
+
 static void gen_rand_expr() {
   buf[0] = '\0';
+  switch (choose(3)) {
+    case 0: gen_num(); break;
+    case 1: gen("("); gen_rand_expr(); gen(")"); break;
+    default: gen_rand_expr(); gen_rand_expr(gen_rand_op()); break;
+  }
+}
+
+static void gen(char* s) {
+  strcat(buf, s);
+}
+
+static void gen_num(bool div) {
+  int32_t rnd;
+  if (zf)  rnd= choose(INT32_MAX - 1) + 1;
+  else rnd= choose(INT32_MAX);
+  sprintf(buf, strcat(buf, "%u"), rnd);
+}
+
+static bool gen_rand_op() {
+  char* rand_op = op[choose(4)];
+  strcat(buf, rand_op);
+  if (rand_op[0] == '/') return true; else return false; 
 }
 
 int main(int argc, char *argv[]) {
