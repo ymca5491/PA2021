@@ -179,7 +179,7 @@ uint find_main_op(uint p, uint q, bool *success) {
       if (tokens[i].type == '*') {
         /* '*' */
         if (i == p || 
-            (tokens[i - 1].type != TK_DEC && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != '(' && tokens[i - 1].type != TK_DEREF)
+            (tokens[i - 1].type != TK_DEC && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_DEREF)
         ){
           /* DEREF */
           tokens[i].type = TK_DEREF;
