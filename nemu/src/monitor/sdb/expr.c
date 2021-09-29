@@ -22,7 +22,7 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {"[ \\n]+", TK_NOTYPE},    // spaces
+  {"\\s+", TK_NOTYPE},  // spaces
   {"==", TK_EQ},        // equal
   {"!=", TK_NEQ},       // unequal
   {"\\+", '+'},         // plus
