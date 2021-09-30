@@ -120,7 +120,7 @@ static bool make_token(char *e) {
   return true;
 }
 
-word_t eval(uint p, uint q, bool *success);
+static word_t eval(uint p, uint q, bool *success);
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -133,7 +133,7 @@ word_t expr(char *e, bool *success) {
 }
 
 
-bool check_parentheses(uint p, uint q) {
+static bool check_parentheses(uint p, uint q) {
   uint i;
   if (tokens[p].type != '(' || tokens[q].type != ')') 
     return false;     // not started with a '(' or ended with a ')'
@@ -149,7 +149,7 @@ bool check_parentheses(uint p, uint q) {
   }
 }
 
-uint find_main_op(uint p, uint q, bool *success) {
+static uint find_main_op(uint p, uint q, bool *success) {
   int bracket_count = 0;
   bool exist_eq = false;
   bool exist_plusminus = false;
@@ -235,7 +235,7 @@ uint find_main_op(uint p, uint q, bool *success) {
 
 }
 
-word_t eval(uint p, uint q, bool *success) {
+static word_t eval(uint p, uint q, bool *success) {
   if (p > q) {
     /* Bad expression */
     Log("Bad expression");
