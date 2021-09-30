@@ -40,6 +40,18 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_w(char* args) {
+  add_wp(args);
+  return 0;
+}
+
+static int cmd_d(char* args) {
+  int n;
+  sscanf(args, "%d", &n);
+  delete_wp(n);
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static int cmd_si(char *args);
@@ -67,6 +79,8 @@ static struct {
   {"info", "Print the status of program", cmd_info},
   {"x", "Print the next N 4-bytes of the input address", cmd_x},
   {"p", "Print the value of the expression", cmd_p},
+  {"w", "Set a watchpoint to supervise the value of an expression", cmd_w},
+  {"d", "Delete watchpoint N", cmd_d},
   {"exprtest", "To test the correctness of command p", cmd_exprtest},
 
 };
@@ -185,7 +199,7 @@ static int cmd_p(char* args) {
     return 0;
   }
   else {
-    printf("Not a valid expression\n");
+    printf("Unvalid expression\n");
     return 0;
   }
 }
