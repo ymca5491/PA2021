@@ -88,7 +88,7 @@ bool wp_update_display_changed() {
     word_t new_val = expr(temp->expr, &success);
     if (temp->last_val != new_val) {
       if(!flag) {flag = true; printf("Watchpoint value changed:\n");}
-      printf("Watchpoint %-10d: %-20s new:%-4u old:%-4u\n", temp->NO, temp->expr, new_val, temp->last_val);
+      printf("Watchpoint %-4d: %-16s new:%-8u old:%-8u\n", temp->NO, temp->expr, new_val, temp->last_val);
       temp->last_val = new_val;
     }
   }
