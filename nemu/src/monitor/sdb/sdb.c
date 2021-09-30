@@ -199,7 +199,7 @@ static int cmd_exprtest(char* args) {
 
   while(fgets(line, 512, input) != NULL) {
     try_count++;
-    printf("%s", line);
+    //printf("%s", line);
     char* t_res_s = strtok(line, " ");
     char* t_expr = strtok(NULL, " ");
     bool success;
