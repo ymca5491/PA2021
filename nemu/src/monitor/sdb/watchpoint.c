@@ -52,7 +52,7 @@ void free_wp(WP *wp) {
 
 WP* find_wp(int NO) {
   WP* wp_NO = head;
-  while(!wp_NO && head->NO != NO) {
+  while(wp_NO && head->NO != NO) {
     wp_NO = wp_NO->next;
   }
   return wp_NO;
@@ -64,7 +64,7 @@ void delete_wp(int NO) {
 
 void wp_display() {
   printf("%-6s%-20s\n", "Num", "What");
-  while(!head){
+  while(head){
     printf("%-6d%-20s\n", head->NO, head->expr);
     head = head->next;
   }
