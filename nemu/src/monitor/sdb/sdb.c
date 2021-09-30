@@ -149,7 +149,7 @@ static int cmd_info(char* args) {
     }
     else if(strcmp(arg, "w") == 0){
       /* print the information of watch points */
-      printf("Not implemented yet\n");
+      wp_display();
     }
     else{
       /* invalid argument */

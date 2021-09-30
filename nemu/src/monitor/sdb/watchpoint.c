@@ -62,6 +62,10 @@ void delete_wp(int NO) {
   free_wp(find_wp(NO));
 }
 
-void show_wp() {
-  
+void wp_display() {
+  printf("%-6s%-20s\n", "Num", "What");
+  while(!head){
+    printf("%-6d%-20s\n", head->NO, head->expr);
+    head = head->next;
+  }
 }
