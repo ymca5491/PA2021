@@ -6,7 +6,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_REG,
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_REG, TK_REVERSE,
   TK_DEREF, TK_DEC, TK_HEX,
 
   /* TODO: Add more token types */
@@ -196,30 +196,50 @@ static uint find_main_op(uint p, uint q, bool *success) {
           }
         }
       }
-      else if (tokens[i].type == '&'){
+      else if (tokens[i].type == '-') {
+        /* '*' */
+        if (i == p || 
+            (tokens[i - 1].type != TK_DEC && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_REG)
+        ) {
+          /* REVERSE */
+          tokens[i].type = TK_REVERSE;
+          if (!exist_eq && !exist_plusminus && !exist_muldiv) {
+            op = i;
+            *success = true;
+          }
+        }
+        else{
+          if (!exist_eq) {
+            exist_plusminus = true;
+            op = i;
+            *success = true;
+          }
+        }
+      }
+      else if (tokens[i].type == '&') {
         /* and */
         *success = true;
         return i; // max priority
       }
-      else if (tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ){
+      else if (tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ) {
         /* == or != */
         exist_eq = true;
         op = i;
         *success = true;
       }
-      else if((tokens[i].type == '+' || tokens[i].type == '-') && !exist_eq){
+      else if(tokens[i].type == '+' && !exist_eq) {
         /* '+' or '-' */
         exist_plusminus = true;
         op = i;
         *success = true;
       }
-      else if(tokens[i].type == '/' && !exist_eq && !exist_plusminus){
+      else if(tokens[i].type == '/' && !exist_eq && !exist_plusminus) {
         /* '/' */
         exist_muldiv = true;
         op = i;
         *success = true;
       }
-      else if (tokens[i].type == TK_DEREF) {
+      else if (tokens[i].type == TK_DEREF || tokens[i].type == TK_REVERSE) {
         /* deref */
         if (!exist_eq && !exist_plusminus && !exist_muldiv) {
           op = i;
@@ -278,6 +298,16 @@ static word_t eval(uint p, uint q, bool *success) {
       *success = find_success && success1;
       if (*success){
         return paddr_read(addr, 4);
+      }
+      else{
+        return 0;
+      }
+    }
+    else if (tokens[op].type == TK_REVERSE) {
+      word_t val = eval(p, op - 1, &success1);
+      *success = find_success && success1;
+      if (*success){
+        return -val;
       }
       else{
         return 0;
