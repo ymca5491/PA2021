@@ -219,7 +219,7 @@ static uint find_main_op(uint p, uint q, bool *success) {
         op = i;
         *success = true;
       }
-      else {
+      else if (tokens[i].type == TK_DEREF) {
         /* deref */
         if (!exist_eq && !exist_plusminus && !exist_muldiv) {
           op = i;
