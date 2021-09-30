@@ -41,7 +41,9 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_w(char* args) {
-  add_wp(args);
+  bool success;
+  add_wp(args, &success);
+  if (!success) printf("Unvalid expression\n");
   return 0;
 }
 

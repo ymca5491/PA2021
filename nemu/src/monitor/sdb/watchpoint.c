@@ -9,6 +9,7 @@ typedef struct watchpoint {
   /* TODO: Add more members if necessary */
 
   char expr[64];  // the expression watched
+  word_t last_val;// last value of the expression
 
 } WP;
 
@@ -29,17 +30,18 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP* new_wp(char* expr) {
+WP* new_wp(char* expr_c) {
   assert(free_);
   WP* new = free_;
   free_ = free_->next;
-  strcpy(new->expr, expr);
+  strcpy(new->expr, expr_c);
   return new;
 }
 
-void add_wp(char* expr) {
-  WP* new = new_wp(expr);
+void add_wp(char* expr_c, bool* success) {
+  WP* new = new_wp(expr_c);
   new->next = head;
+  new->last_val = expr(expr_c, success);
   head = new;
 }
 
