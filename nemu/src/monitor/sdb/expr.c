@@ -197,7 +197,7 @@ static uint find_main_op(uint p, uint q, bool *success) {
         }
       }
       else if (tokens[i].type == '-') {
-        /* '*' */
+        /* '-' */
         if (i == p || 
             (tokens[i - 1].type != TK_DEC && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != ')' && tokens[i - 1].type != TK_REG)
         ) {
@@ -228,7 +228,7 @@ static uint find_main_op(uint p, uint q, bool *success) {
         *success = true;
       }
       else if(tokens[i].type == '+' && !exist_eq) {
-        /* '+' or '-' */
+        /* '+' */
         exist_plusminus = true;
         op = i;
         *success = true;
@@ -304,7 +304,7 @@ static word_t eval(uint p, uint q, bool *success) {
       }
     }
     else if (tokens[op].type == TK_REVERSE) {
-      word_t val = eval(p, op - 1, &success1);
+      word_t val = eval(op + 1, q, &success1);
       *success = find_success && success1;
       if (*success){
         return -val;
