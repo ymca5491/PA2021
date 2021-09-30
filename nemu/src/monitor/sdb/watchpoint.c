@@ -79,3 +79,18 @@ void wp_display() {
     temp = temp->next;
   }
 }
+
+bool wp_update_display_changed() {
+  WP* temp = head;
+  bool flag = false;
+  bool success;     // not used
+  while(temp){
+    word_t new_val = expr(temp->expr, &success);
+    if (temp->last_val != new_val) {
+      if(!flag) {flag = true; printf("Watchpoint value changed:\n");}
+      printf("Watchpoint %-10d: %-20s new:%-4u old:%-4u\n", temp->NO, temp->expr, new_val, temp->last_val);
+      temp->last_val = new_val;
+    }
+  }
+  if (flag) return true; else return false;
+}
