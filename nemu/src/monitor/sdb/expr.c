@@ -154,6 +154,8 @@ static uint find_main_op(uint p, uint q, bool *success) {
   bool exist_eq = false;
   bool exist_plusminus = false;
   bool exist_muldiv = false;
+  bool exist_deref = false;
+  bool exist_reverse = false;
   unsigned int op = 0;
 
   *success = false;
@@ -183,8 +185,9 @@ static uint find_main_op(uint p, uint q, bool *success) {
         ){
           /* DEREF */
           tokens[i].type = TK_DEREF;
-          if (!exist_eq && !exist_plusminus && !exist_muldiv) {
+          if (!exist_eq && !exist_plusminus && !exist_muldiv && !exist_deref) {
             op = i;
+            exist_deref = true;
             *success = true;
           }
         }
@@ -203,8 +206,9 @@ static uint find_main_op(uint p, uint q, bool *success) {
         ) {
           /* REVERSE */
           tokens[i].type = TK_REVERSE;
-          if (!exist_eq && !exist_plusminus && !exist_muldiv) {
+          if (!exist_eq && !exist_plusminus && !exist_muldiv && !exist_reverse) {
             op = i;
+            exist_reverse = true;
             *success = true;
           }
         }
