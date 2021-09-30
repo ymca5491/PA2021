@@ -48,7 +48,7 @@ static int cmd_w(char* args) {
 static int cmd_d(char* args) {
   int n;
   sscanf(args, "%d", &n);
-  delete_wp(n);
+  if (!delete_wp(n)) printf("Watchpoint %d does not exist", n);
   return 0;
 }
 

@@ -48,16 +48,25 @@ void free_wp(WP *wp) {
   free_= wp;
 }
 
-WP* find_wp(int NO) {
+bool delete_wp(int NO) {
   WP* wp_NO = head;
-  while(wp_NO && head->NO != NO) {
-    wp_NO = wp_NO->next;
+  if (wp_NO->NO == NO) {
+    head = wp_NO->next;
+    free_wp(wp_NO);
+    return true;
   }
-  return wp_NO;
-}
-
-void delete_wp(int NO) {
-  free_wp(find_wp(NO));
+  else {
+    while(wp_NO->next && wp_NO->next->NO != NO) {
+      wp_NO = wp_NO->next;
+    }
+    if (!wp_NO->next) return false;
+    else {
+      WP* temp = wp_NO->next;
+      wp_NO->next = temp->next;
+      free_wp(temp);
+      return true;
+    }
+  }
 }
 
 void wp_display() {
