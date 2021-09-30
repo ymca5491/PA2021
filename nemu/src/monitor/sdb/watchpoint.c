@@ -61,3 +61,7 @@ WP* find_wp(int NO) {
 void delete_wp(int NO) {
   free_wp(find_wp(NO));
 }
+
+void show_wp() {
+  
+}
