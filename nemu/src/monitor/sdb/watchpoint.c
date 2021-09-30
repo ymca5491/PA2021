@@ -8,8 +8,7 @@ typedef struct watchpoint {
 
   /* TODO: Add more members if necessary */
 
-  //char expr[64];  // the expression watched
-  char* expr;
+  char expr[64];  // the expression watched
 
 } WP;
 
@@ -34,8 +33,7 @@ WP* new_wp(char* expr) {
   assert(free_);
   WP* new = free_;
   free_ = free_->next;
-  //strcpy(new->expr, expr);
-  new->expr = expr;
+  strcpy(new->expr, expr);
   return new;
 }
 
