@@ -73,7 +73,7 @@ void wp_display() {
   printf("%-6s%-20s\n", "Num", "What");
   WP* temp = head;
   while(temp){
-    printf("%-6d%-20s\n", temp->NO, temp->expr);
+    printf("%-20d%-20s\n", temp->NO, temp->expr);
     temp = temp->next;
   }
 }
