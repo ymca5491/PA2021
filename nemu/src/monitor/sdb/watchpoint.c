@@ -72,6 +72,7 @@ bool delete_wp(int NO) {
 }
 
 void wp_display() {
+  if (!head) {puts("No watchpoint yet"); return;}
   printf("%-20s%-20s\n", "Num", "What");
   WP* temp = head;
   while(temp){
@@ -84,7 +85,7 @@ bool wp_update_display_changed() {
   WP* temp = head;
   bool flag = false;
   bool success;     // not used
-  while(temp){
+  while(temp != NULL){
     word_t new_val = expr(temp->expr, &success);
     if (temp->last_val != new_val) {
       if(!flag) {flag = true; printf("Watchpoint value changed:\n");}
