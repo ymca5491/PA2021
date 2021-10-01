@@ -43,3 +43,9 @@ else
 # Include rules to build NEMU
 include $(NEMU_HOME)/scripts/native.mk
 endif
+
+.PHONY: count
+
+count:
+	@echo "Total lines:"
+	@find $(NEMU_HOME) -name "*.[ch]" | xargs cat | grep -v ^$$ | wc -l
