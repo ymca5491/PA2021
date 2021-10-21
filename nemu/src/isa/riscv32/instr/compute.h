@@ -7,6 +7,7 @@ def_EHelper(auipc) {
 }
 
 
+
 def_EHelper(addi) {
   rtl_addi(s, ddest, dsrc1, id_src2->simm);
 }
@@ -14,6 +15,13 @@ def_EHelper(addi) {
 def_EHelper(sltiu) {
   rtl_setrelopi(s, RELOP_LTU, ddest, dsrc1, id_src2->imm);
 }
+
+def_EHelper(srai) {
+  rtl_li(s, s0, id_src2->imm);
+  rtl_andi(s, s0, s0, 0x1f);
+  rtl_sra(s, ddest, dsrc1, s0);
+}
+
 
 def_EHelper(add) {
   rtl_add(s, ddest, dsrc1, dsrc2);
