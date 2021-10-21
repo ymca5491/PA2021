@@ -7,5 +7,6 @@ def_EHelper(sw) {
 }
 
 def_EHelper(sh) {
-  ;
+  rtl_andi(s, s0, ddest, 0xffff);
+  rtl_sm(s, s0, dsrc1, id_src2->imm, 2);
 }
