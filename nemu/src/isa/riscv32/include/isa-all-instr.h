@@ -7,7 +7,7 @@
                       f(sll) f(sltu) \
                       f(addi) f(andi) f(xori) \
                       f(slt) f(sltiu) \
-                      f(srai) \
+                      f(slli) f(srai) \
                       f(lui) f(auipc) \
                       f(jal) f(jalr) \
                       f(lw) f(lh) f(lhu) f(lbu) \

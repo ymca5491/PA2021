@@ -23,6 +23,10 @@ def_EHelper(sltiu) {
   rtl_setrelopi(s, RELOP_LTU, ddest, dsrc1, id_src2->imm);
 }
 
+def_EHelper(slli) {
+  rtl_srai(s, ddest, dsrc1, id_src2->imm);
+}
+
 def_EHelper(srai) {
   rtl_li(s, s0, id_src2->imm);
   rtl_andi(s, s0, s0, 0x1f);
