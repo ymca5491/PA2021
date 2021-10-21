@@ -5,7 +5,7 @@
                       f(addi) f(andi) f(xori) f(sltiu) f(srai)\
                       f(lui) f(auipc) \
                       f(jal) f(jalr) \
-                      f(lw) f(lbu) f(sw) f(sh)\
+                      f(lw) f(lbu) f(sw) f(sh) f(sb)\
                       f(beq) f(bne)\
                       f(inv) f(nemu_trap)
 
