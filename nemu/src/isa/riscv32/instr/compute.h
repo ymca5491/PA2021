@@ -7,7 +7,6 @@ def_EHelper(auipc) {
 }
 
 
-
 def_EHelper(addi) {
   rtl_addi(s, ddest, dsrc1, id_src2->simm);
 }
@@ -41,6 +40,10 @@ def_EHelper(or) {
 
 def_EHelper(xor) {
   rtl_xor(s, ddest, dsrc1, dsrc2);
+}
+
+def_EHelper(sll) {
+  rtl_sll(s, ddest, dsrc1, dsrc2);
 }
 
 def_EHelper(sltu) {
