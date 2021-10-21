@@ -58,7 +58,7 @@ static def_DHelper(B) {
 static def_DHelper(R) {
   decode_op_r(s, id_src1, s->isa.instr.r.rs1, false);
   decode_op_r(s, id_src2, s->isa.instr.r.rs2, false);
-  decode_op_i(s, id_dest, s->isa.instr.r.rd, true);
+  decode_op_r(s, id_dest, s->isa.instr.r.rd, true);
 }
 
 def_THelper(load) {
