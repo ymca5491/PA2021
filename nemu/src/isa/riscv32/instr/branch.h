@@ -1,15 +1,9 @@
 def_EHelper(beq) {
-    rtl_xor(s, s0, dsrc1, dsrc2);
-    if (*s0 == 0) {
-        rtl_addi(s, s1, &s->pc, id_dest->simm);
-        rtl_jr(s, s1);
-    }
+    rtl_addi(s, s0, &s->pc, id_dest->simm);
+    rtl_jrelop(s, RELOP_EQ, dsrc1, dsrc2, *s0);
 }
 
 def_EHelper(bne) {
-    rtl_xor(s, s0, dsrc1, dsrc2);
-    if (*s0 != 0) {
-        rtl_addi(s, s1, &s->pc, id_dest->simm);
-        rtl_jr(s, s1);
-    }
+    rtl_addi(s, s0, &s->pc, id_dest->simm);
+    rtl_jrelop(s, RELOP_NE, dsrc1, dsrc2, *s0);
 }

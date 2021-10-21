@@ -12,12 +12,7 @@ def_EHelper(addi) {
 }
 
 def_EHelper(sltiu) {
-  if ((word_t)*dsrc1 < id_src2->imm) {
-    rtl_li(s, ddest, 1);
-  }
-  else {
-    rtl_li(s, ddest, 0);
-  }
+  rtl_setrelopi(s, RELOP_LEU, ddest, dsrc1, id_src2->imm);
 }
 
 def_EHelper(add) {
@@ -37,11 +32,6 @@ def_EHelper(xor) {
 }
 
 def_EHelper(sltu) {
-  if ((word_t)*dsrc1 < *dsrc2) {
-    rtl_li(s, ddest, 1);
-  }
-  else {
-    rtl_li(s, ddest, 0);
-  }
+  rtl_setrelop(s, RELOP_LEU, ddest, dsrc1, dsrc2);
 }
 
