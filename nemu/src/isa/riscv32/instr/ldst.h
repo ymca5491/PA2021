@@ -3,7 +3,7 @@ def_EHelper(lw) {
 }
 
 def_EHelper(lbu) {
-  rtl_sext(s, s0, ddest, 2);
+  rtl_zext(s, s0, ddest, 2);
   rtl_lm(s, s0, dsrc1, id_src2->imm, 2);
 }
 
