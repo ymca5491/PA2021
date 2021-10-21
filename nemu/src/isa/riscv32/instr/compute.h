@@ -12,7 +12,7 @@ def_EHelper(addi) {
 }
 
 def_EHelper(sltiu) {
-  rtl_setrelopi(s, RELOP_LEU, ddest, dsrc1, id_src2->imm);
+  rtl_setrelopi(s, RELOP_LTU, ddest, dsrc1, id_src2->imm);
 }
 
 def_EHelper(add) {
@@ -32,6 +32,6 @@ def_EHelper(xor) {
 }
 
 def_EHelper(sltu) {
-  rtl_setrelop(s, RELOP_LEU, ddest, dsrc1, dsrc2);
+  rtl_setrelop(s, RELOP_LTU, ddest, dsrc1, dsrc2);
 }
 
