@@ -7,6 +7,11 @@ def_EHelper(lh) {
   rtl_sext(s, ddest, s0, 2);
 }
 
+def_EHelper(lhu) {
+  rtl_lm(s, s0, dsrc1, id_src2->imm, 2);
+  rtl_zext(s, ddest, s0, 2);
+}
+
 def_EHelper(lbu) {
   rtl_lm(s, s0, dsrc1, id_src2->imm, 1);
   rtl_zext(s, ddest, s0, 1);
