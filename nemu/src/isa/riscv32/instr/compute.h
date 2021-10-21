@@ -12,11 +12,11 @@ def_EHelper(addi) {
 }
 
 def_EHelper(andi) {
-  rtl_addi(s, ddest, dsrc1, id_src2->simm);
+  rtl_addi(s, ddest, dsrc1, id_src2->imm);
 }
 
 def_EHelper(xori) {
-  rtl_xori(s, ddest, dsrc1, id_src2->simm);
+  rtl_xori(s, ddest, dsrc1, id_src2->imm);
 }
 
 def_EHelper(sltiu) {
