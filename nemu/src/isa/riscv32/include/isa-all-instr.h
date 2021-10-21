@@ -4,7 +4,8 @@
 #define INSTR_LIST(f) f(add) f(sub) \
                       f(mul) f(mulh) f(div) f(rem) \
                       f(and) f(or) f(xor) \
-                      f(sll) f(sltu) \
+                      f(sll) f(sra) \
+                      f(sltu) \
                       f(addi) f(andi) f(xori) \
                       f(slt) f(sltiu) \
                       f(slli) f(srli) f(srai) \
