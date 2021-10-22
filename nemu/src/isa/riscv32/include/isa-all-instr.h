@@ -13,7 +13,7 @@
                       f(jal) f(jalr) \
                       f(lw) f(lh) f(lhu) f(lbu) \
                       f(sw) f(sh) f(sb) \
-                      f(beq) f(bne) f(bge) f(blt) f(bltu) \
+                      f(beq) f(bne) f(bge) f(bgeu) f(blt) f(bltu) \
                       f(inv) f(nemu_trap)
 
 def_all_EXEC_ID();
