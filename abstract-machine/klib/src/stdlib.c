@@ -48,7 +48,7 @@ char* itoa(long val, char* str, int base) {
     buf[idx] = val_u % base;
     val_u /= base;
     idx++;
-  } while (val);
+  } while (val_u);
 
   for (; idx--;) {
     if (buf[idx] > 9) {
