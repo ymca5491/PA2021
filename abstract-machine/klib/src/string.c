@@ -94,7 +94,7 @@ void *memset(void *s, int c, size_t n) {
 void *memmove(void *dst, const void *src, size_t n) {
   uint8_t* pDst = dst;
   const uint8_t* pSrc = src;
-  uint8_t* t = malloc(n * sizeof(uint8_t));
+  uint8_t t[n];
   uint8_t* pT = t;
   size_t i;
   for (i = 0; i < n; i++) {
