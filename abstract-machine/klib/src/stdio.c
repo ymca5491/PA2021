@@ -32,7 +32,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         case ' ': panic("Not implemented"); fmt++; break;
         case '#': panic("Not implemented"); fmt++; break;
         case '0': w_fill = '0'; fmt++; break;
-        default:;
+        default: ;
       }
 
      /* width 
