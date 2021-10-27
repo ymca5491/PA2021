@@ -17,7 +17,7 @@
 
 #ifdef CONFIG_IRINGBUF
 #define RINGBUF_SIZE 16
-  uint8_t ring_count = 0;
+  uint8_t ring_count = -1;
   char ringbuf[RINGBUF_SIZE][128];
   void iringbuf_display() {
     for (int i = 0; i < RINGBUF_SIZE; i++) {
@@ -113,8 +113,8 @@ void fetch_decode(Decode *s, vaddr_t pc) {
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.instr.val, ilen);
 #endif
 #ifdef CONFIG_IRINGBUF
-  strcpy(ringbuf[ring_count], p);
   ring_count = (ring_count + 1) % RINGBUF_SIZE;
+  strcpy(ringbuf[ring_count], p);
 #endif
 }
 
