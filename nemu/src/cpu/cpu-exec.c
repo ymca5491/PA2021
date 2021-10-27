@@ -114,7 +114,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
 #endif
 #ifdef CONFIG_IRINGBUF
   ring_count = (ring_count + 1) % RINGBUF_SIZE;
-  strcpy(ringbuf[ring_count], p);
+  strcpy(ringbuf[ring_count], s->logbuf);
 #endif
 }
 
