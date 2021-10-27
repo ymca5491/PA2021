@@ -4,14 +4,32 @@
 #include <isa-all-instr.h>
 #include <locale.h>
 
-bool wp_update_display_changed();
-
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
 #define MAX_INSTR_TO_PRINT 10
+
+#ifdef CONFIG_WATCHPOINT
+  bool wp_update_display_changed();
+#endif
+
+#ifdef CONFIG_IRINGBUF
+#define RINGBUF_SIZE 16
+  uint8_t ring_count = 0;
+  char ringbuf[RINGBUF_SIZE][128];
+  void iringbuf_display() {
+    for (int i = 0; i < RINGBUF_SIZE; i++) {
+      if (i == ring_count) {
+        printf("-->%s\n", ringbuf[i]);
+      }
+      else {
+        printf("   %s\n", ringbuf[i]);
+      }
+    }
+  }
+#endif
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_instr = 0;
@@ -26,6 +44,10 @@ void fetch_decode(Decode *s, vaddr_t pc);
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) log_write("%s\n", _this->logbuf);
+#endif
+#ifdef CONFIG_IRINGBUF
+  if (nemu_state.state == NEMU_ABORT)
+    iringbuf_display();
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -58,6 +80,9 @@ static void statistic() {
 
 void assert_fail_msg() {
   isa_reg_display();
+#ifdef CONFIG_IRINGBUF
+  iringbuf_display();
+#endif
   statistic();
 }
 
@@ -86,6 +111,10 @@ void fetch_decode(Decode *s, vaddr_t pc) {
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.instr.val, ilen);
+#endif
+#ifdef CONFIG_IRINGBUF
+  strcpy(ringbuf[ring_count], p);
+  ring_count = (ring_count + 1) % RINGBUF_SIZE;
 #endif
 }
 
