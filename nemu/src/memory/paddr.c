@@ -40,8 +40,8 @@ void init_mem() {
 word_t paddr_read(paddr_t addr, int len) {
 #ifdef CONFIG_MTRACE
   if(addr >= CONFIG_MTRACE_START && addr <= CONFIG_MTRACE_END) {
-    printf("Reading at: %x", addr);
-    log_write("Reading at: %x", addr);
+    printf("Reading at: %x\n", addr);
+    log_write("Reading at: %x\n", addr);
   }
 #endif
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
@@ -53,8 +53,8 @@ word_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, word_t data) {
 #ifdef CONFIG_MTRACE
   if(addr >= CONFIG_MTRACE_START && addr <= CONFIG_MTRACE_END) {
-    printf("Writing at: %x", addr);
-    log_write("Writing at: %x", addr);
+    printf("Writing at: %x\n", addr);
+    log_write("Writing at: %x\n", addr);
   }
 #endif
   if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
