@@ -152,6 +152,10 @@ config IRINGBUF
   bool "Enable ring buffer"
   default y
 
+config FTRACE
+  bool "Enable function trace"
+  default y
+
 config MTRACE
   bool "Enable memory tracer"
   default n
