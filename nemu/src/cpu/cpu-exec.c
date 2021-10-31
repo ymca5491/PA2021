@@ -147,7 +147,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
       *pf = 0;
     }
     else {
-      memset(pf, '\t', depth_count);
+      memset(pf, ' ', depth_count);
       pf += depth_count;
       for (int i = 0; i < functab_num; i++) {
         if (s->dnpc >= functab[i].st_value && s->dnpc < functab[i].st_value + functab[i].st_size) {
