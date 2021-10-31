@@ -22,7 +22,7 @@ static void get_elf_file(const char* elf_file) {
     int fsize = ftell(fp);
     elf = malloc(fsize);
     fseek(fp, 0,SEEK_SET);
-    assert(fread(elf, fsize, 1, fp) <= 1);
+    assert(fread(elf, fsize, 1, fp) == 1);
     fclose(fp);
 }
 
@@ -81,7 +81,7 @@ char* idx2str(char* tab, int idx) {
 }
 
 void init_ftrace(const char* elf_file) {
-
+    
     /* load .elf file */
     get_elf_file(elf_file);
 
