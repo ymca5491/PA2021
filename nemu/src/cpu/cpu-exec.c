@@ -139,7 +139,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
       pf += depth_count;
       for (int i = 0; i < functab_num; i++) {
         if (s->pc >= functab[i].st_value && s->pc < functab[i].st_value + functab[i].st_size) {
-          pf += sprintf(pf, "ret[%s]\n", idx2str(strtab, functab[i].st_name));
+          pf += sprintf(pf, "ret[%s]", idx2str(strtab, functab[i].st_name));
           depth_count--;
           break;
         }
@@ -151,7 +151,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
       pf += depth_count;
       for (int i = 0; i < functab_num; i++) {
         if (s->dnpc >= functab[i].st_value && s->dnpc < functab[i].st_value + functab[i].st_size) {
-          pf += sprintf(pf, "call[%s@0x%08x]\n", idx2str(strtab, functab[i].st_name), s->dnpc);
+          pf += sprintf(pf, "call[%s@0x%08x]", idx2str(strtab, functab[i].st_name), s->dnpc);
           depth_count++;
           break;
         }
