@@ -135,7 +135,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
   if (opcode == 0b1101111 || opcode == 0b1100111) {
     fflag = true;
     if (s->isa.instr.val == 0x00008067) {
-      memset(pf, '\t', depth_count);
+      memset(pf, ' ', depth_count);
       pf += depth_count;
       for (int i = 0; i < functab_num; i++) {
         if (s->pc >= functab[i].st_value && s->pc < functab[i].st_value + functab[i].st_size) {
