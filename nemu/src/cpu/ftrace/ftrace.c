@@ -39,7 +39,7 @@ static void get_SHstrtab() {
         if (shdr[i].sh_type == SHT_STRTAB) {
             if (shdr[i].sh_name >= shdr[i].sh_size) 
                 continue;
-            else if (strcmp(idx2str(elf + shdr[i].sh_offset, shdr[i].sh_name), SHSTRTAB_NAME)) {
+            else if (strcmp(idx2str(elf + shdr[i].sh_offset, shdr[i].sh_name), SHSTRTAB_NAME) == 0) {
                 SHstrtab = elf + shdr[i].sh_offset;
                 return;
             }
@@ -49,7 +49,7 @@ static void get_SHstrtab() {
 
 static void get_strtab() {
     for (int i = 0; i < hdr->e_shnum; i++) {
-        if (strcmp(idx2str(SHstrtab, shdr[i].sh_name), STRTAB_NAME)) {
+        if (strcmp(idx2str(SHstrtab, shdr[i].sh_name), STRTAB_NAME) == 0) {
             strtab = elf + shdr[i].sh_offset;
             return;
         }
@@ -58,7 +58,7 @@ static void get_strtab() {
 
 static void get_symtab() {
     for (int i = 0; i < hdr->e_shnum; i++) {
-        if (strcmp(idx2str(SHstrtab, shdr[i].sh_name), SYMTAB_NAME)) {
+        if (strcmp(idx2str(SHstrtab, shdr[i].sh_name), SYMTAB_NAME) == 0) {
             symtab = (Elf32_Sym*)(elf + shdr[i].sh_offset);
             symtab_num = shdr[i].sh_size / sizeof(Elf32_Sym);
         }
@@ -81,7 +81,7 @@ char* idx2str(char* tab, int idx) {
 }
 
 void init_ftrace(const char* elf_file) {
-    
+
     /* load .elf file */
     get_elf_file(elf_file);
 
