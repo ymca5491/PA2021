@@ -32,6 +32,8 @@
 #endif
 
 #ifdef CONFIG_FTRACE
+  bool fflag;
+  char fbuf[128];
   #include<ftrace.h>
   int depth_count = 0;
 #endif
@@ -60,7 +62,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (wp_update_display_changed()) nemu_state.state = NEMU_STOP;
 #endif
 #ifdef CONFIG_FTRACE
-  
+  if (fflag) {
+    puts(fbuf);
+    log_write("%s\n", fbuf);
+  }
 #endif
 }
 
@@ -124,6 +129,40 @@ void fetch_decode(Decode *s, vaddr_t pc) {
   ring_count = (ring_count + 1) % RINGBUF_SIZE;
   strcpy(ringbuf[ring_count], s->logbuf);
 #endif
+#ifdef CONFIG_FTRACE
+  char* pf = fbuf;
+  int opcode = s->isa.instr.val & 0x7f;
+  if (opcode == 0b1101111 || opcode == 0b1100111) {
+    fflag = true;
+    if (s->isa.instr.val == 0x00008067) {
+      memset(pf, '\t', depth_count);
+      pf += depth_count;
+      for (int i = 0; i < functab_num; i++) {
+        if (s->pc >= functab[i].st_value && s->pc < functab[i].st_value + functab[i].st_size) {
+          pf += sprintf(pf, "ret[%s]\n", idx2str(strtab, functab[i].st_name));
+          depth_count--;
+          break;
+        }
+      }
+      *pf = 0;
+    }
+    else {
+      memset(pf, '\t', depth_count);
+      pf += depth_count;
+      for (int i = 0; i < functab_num; i++) {
+        if (s->dnpc >= functab[i].st_value && s->dnpc < functab[i].st_value + functab[i].st_size) {
+          pf += sprintf(pf, "call[%s@0x%08x]\n", idx2str(strtab, functab[i].st_name), s->dnpc);
+          depth_count++;
+          break;
+        }
+      }
+      *pf = 0;
+    }
+  }
+  else{
+    fflag = false;
+  }
+#endif
 }
 
 /* Simulate how the CPU works. */
@@ -154,6 +193,9 @@ void cpu_exec(uint64_t n) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
     case NEMU_END: case NEMU_ABORT:
+  #ifdef CONFIG_FTRACE
+      release_ftrace();
+  #endif
       Log("nemu: %s at pc = " FMT_WORD,
           (nemu_state.state == NEMU_ABORT ? ASNI_FMT("ABORT", ASNI_FG_RED) :
            (nemu_state.halt_ret == 0 ? ASNI_FMT("HIT GOOD TRAP", ASNI_FG_GREEN) :

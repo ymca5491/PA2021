@@ -4,6 +4,7 @@
 void init_rand();
 void init_log(const char *log_file);
 void init_mem();
+void init_ftrace(const char* elf_file);
 void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
@@ -105,6 +106,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Perform ISA dependent initialization. */
   init_isa();
+
+  /* Load the .elf file if ftrace is enabled */
+  IFDEF(CONFIG_FTRACE, init_ftrace(elf_file));
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();
