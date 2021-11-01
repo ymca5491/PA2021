@@ -3,7 +3,7 @@
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  if (ref_r->pc != cpu.pc) {
+  if (ref_r->pc == cpu.pc) {
     printf("pc is different after executing instruction at pc = "FMT_WORD, pc);
     return false;
   }
