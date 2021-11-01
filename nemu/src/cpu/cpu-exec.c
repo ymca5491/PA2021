@@ -79,6 +79,40 @@ static const void* g_exec_table[TOTAL_INSTR] = {
 static void fetch_decode_exec_updatepc(Decode *s) {
   fetch_decode(s, cpu.pc);
   s->EHelper(s);
+#ifdef CONFIG_FTRACE
+  char* pf = fbuf;
+  int opcode = s->isa.instr.val & 0x7f;
+  if (opcode == 0b1101111 || opcode == 0b1100111) {
+    fflag = true;
+    if (s->isa.instr.val == 0x00008067) {
+      memset(pf, ' ', depth_count);
+      pf += depth_count;
+      for (int i = 0; i < functab_num; i++) {
+        if (s->pc >= functab[i].st_value && s->pc < functab[i].st_value + functab[i].st_size) {
+          pf += sprintf(pf, "ret[%s]", idx2str(strtab, functab[i].st_name));
+          depth_count--;
+          break;
+        }
+      }
+      *pf = 0;
+    }
+    else {
+      memset(pf, ' ', depth_count);
+      pf += depth_count;
+      for (int i = 0; i < functab_num; i++) {
+        if (s->dnpc >= functab[i].st_value && s->dnpc < functab[i].st_value + functab[i].st_size) {
+          pf += sprintf(pf, "call[%s@0x%08x]", idx2str(strtab, functab[i].st_name), s->dnpc);
+          depth_count++;
+          break;
+        }
+      }
+      *pf = 0;
+    }
+  }
+  else{
+    fflag = false;
+  }
+#endif
   cpu.pc = s->dnpc;
 }
 
@@ -128,40 +162,6 @@ void fetch_decode(Decode *s, vaddr_t pc) {
 #ifdef CONFIG_IRINGBUF
   ring_count = (ring_count + 1) % RINGBUF_SIZE;
   strcpy(ringbuf[ring_count], s->logbuf);
-#endif
-#ifdef CONFIG_FTRACE
-  char* pf = fbuf;
-  int opcode = s->isa.instr.val & 0x7f;
-  if (opcode == 0b1101111 || opcode == 0b1100111) {
-    fflag = true;
-    if (s->isa.instr.val == 0x00008067) {
-      memset(pf, ' ', depth_count);
-      pf += depth_count;
-      for (int i = 0; i < functab_num; i++) {
-        if (s->pc >= functab[i].st_value && s->pc < functab[i].st_value + functab[i].st_size) {
-          pf += sprintf(pf, "ret[%s]", idx2str(strtab, functab[i].st_name));
-          depth_count--;
-          break;
-        }
-      }
-      *pf = 0;
-    }
-    else {
-      memset(pf, ' ', depth_count);
-      pf += depth_count;
-      for (int i = 0; i < functab_num; i++) {
-        if (s->dnpc >= functab[i].st_value && s->dnpc < functab[i].st_value + functab[i].st_size) {
-          pf += sprintf(pf, "call[%s@0x%08x]", idx2str(strtab, functab[i].st_name), s->dnpc);
-          depth_count++;
-          break;
-        }
-      }
-      *pf = 0;
-    }
-  }
-  else{
-    fflag = false;
-  }
 #endif
 }
 
