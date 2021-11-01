@@ -3,13 +3,13 @@
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  if (ref_r->pc != pc) {
-    printf("pc is different at DUT pc = 0x%08x, REF pc = 0x%08x\n", cpu.pc, ref_r->pc);
+  if (ref_r->pc != cpu.pc) {
+    printf("pc is different after executing instruction at pc = "FMT_WORD, pc);
     return false;
   }
 
   for (int i = 0; i < 32; i++) {
-    if (!difftest_check_reg(reg_name(i, 0), cpu.pc, ref_r->gpr[i]._32, gpr(i)))
+    if (!difftest_check_reg(reg_name(i, 0), pc, ref_r->gpr[i]._32, gpr(i)))
       return false;
   }
   return true;
