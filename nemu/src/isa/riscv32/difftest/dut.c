@@ -3,7 +3,7 @@
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  if (pc != cpu.pc) {
+  if (ref_r->pc != pc) {
     printf("pc is different at DUT pc = 0x%08x\n", cpu.pc);
     return false;
   }
