@@ -1,10 +1,12 @@
 #include <isa.h>
+#include <macro.h>
 #include <cpu/difftest.h>
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if (ref_r->pc == cpu.pc) {
-    printf("pc is different after executing instruction at pc = "FMT_WORD"\n", pc);
+    Log("pc is different after executing instruction at pc = " FMT_WORD
+        ", right = " FMT_WORD ", wrong = " FMT_WORD, pc, ref_r->pc, cpu.pc);
     return false;
   }
 

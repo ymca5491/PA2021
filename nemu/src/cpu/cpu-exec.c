@@ -22,10 +22,12 @@
   void iringbuf_display() {
     for (int i = 0; i < RINGBUF_SIZE; i++) {
       if (i == ring_count) {
-        printf("-->%s\n", ringbuf[i]);
+        //printf("-->%s\n", ringbuf[i]);
+        log_write("-->%s\n", ringbuf[i]);
       }
       else {
-        printf("   %s\n", ringbuf[i]);
+        //printf("   %s\n", ringbuf[i]);
+        log_write("   %s\n", ringbuf[i]);
       }
     }
   }
@@ -63,7 +65,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 #ifdef CONFIG_FTRACE
   if (fflag) {
-    puts(fbuf);
+    //puts(fbuf);
     log_write("%s\n", fbuf);
   }
 #endif
