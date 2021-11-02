@@ -6,7 +6,7 @@
                       f(and) f(or) f(xor) \
                       f(sll) f(srl) f(sra) \
                       f(sltu) \
-                      f(addi) f(andi) f(xori) \
+                      f(addi) f(andi) f(ori) f(xori) \
                       f(slt) f(sltiu) \
                       f(slli) f(srli) f(srai) \
                       f(lui) f(auipc) \
