@@ -11,7 +11,7 @@
                       f(slli) f(srli) f(srai) \
                       f(lui) f(auipc) \
                       f(jal) f(jalr) \
-                      f(lw) f(lh) f(lhu) f(lbu) \
+                      f(lw) f(lh) f(lhu) f(lb) f(lbu) \
                       f(sw) f(sh) f(sb) \
                       f(beq) f(bne) f(bge) f(bgeu) f(blt) f(bltu) \
                       f(inv) f(nemu_trap)
