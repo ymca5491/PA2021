@@ -38,7 +38,7 @@ void init_map() {
 }
 
 word_t map_read(paddr_t addr, int len, IOMap *map) {
-#ifdef DTRACE
+#ifdef CONFIG_DTRACE
   log_write("Reading from device \"%s\"", map->name);
 #endif
   assert(len >= 1 && len <= 8);
@@ -50,7 +50,7 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
 }
 
 void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
-#ifdef DTRACE
+#ifdef CONFIG_DTRACE
   log_write("Writing into device \"%s\"", map->name);
 #endif
   assert(len >= 1 && len <= 8);
