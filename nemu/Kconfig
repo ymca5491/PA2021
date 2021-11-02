@@ -154,7 +154,7 @@ config IRINGBUF
 
 config FTRACE
   depends on TRACE
-  bool "Enable function trace"
+  bool "Enable function tracer"
   default y
 
 config MTRACE
@@ -164,13 +164,18 @@ config MTRACE
 
 config MTRACE_START
   depends on MTRACE
-  hex "When memory tracing is enabled (memory address)"
+  hex "Where memory tracer is enabled (memory address)"
   default 0x80000000
 
 config MTRACE_END
   depends on MTRACE
-  hex "When memory tracing is disabled (memory address)"
+  hex "Where memory tracer is disabled (memory address)"
   default 0xffffffff
+
+config DTRACE
+  depends on TRACE && DEVICE
+  bool "Enable device tracer"
+  default y
 
 
 config DIFFTEST
