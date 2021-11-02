@@ -6,7 +6,13 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 int printf(const char *fmt, ...) {
-  panic("Not implemented");
+  char out[256];
+  va_list arg;
+  va_start(arg, fmt);
+  int length = vsprintf(out, fmt, arg);
+  va_end(arg);
+  putstr(out);
+  return length;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
@@ -94,10 +100,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           itoa(va_arg(ap, long), str_t, 10);
           len = strlen(str_t);
           if (width >= 0 && len < width) {
-            for (int i = 0; i < width - len; i++) {
-              *(out + length) = w_fill;
-              length++;
-            }
+            memset(out + length, w_fill, width - len);
+            length += width - len;
           }
           memcpy(out + length, str_t, len);
           length += len;
@@ -107,10 +111,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           itoa(va_arg(ap, unsigned long), str_t, 10);
           len = strlen(str_t);
           if (width >= 0 && len < width) {
-            for (int i = 0; i < width - len; i++) {
-              *(out + length) = w_fill;
-              length++;
-            }
+            memset(out + length, w_fill, width - len);
+            length += width - len;
           }
           memcpy(out + length, str_t, len);
           length += len;
@@ -120,10 +122,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           itoa(va_arg(ap, unsigned long), str_t, 16);
           len = strlen(str_t);
           if (width >= 0 && len < width) {
-            for (int i = 0; i < width - len; i++) {
-              *(out + length) = w_fill;
-              length++;
-            }
+            memset(out + length, w_fill, width - len);
+            length += width - len;
           }
           memcpy(out + length, str_t, len);
           length += len;
