@@ -153,10 +153,12 @@ config IRINGBUF
   default y
 
 config FTRACE
+  depends on TRACE
   bool "Enable function trace"
   default y
 
 config MTRACE
+  depends on TRACE
   bool "Enable memory tracer"
   default n
 
