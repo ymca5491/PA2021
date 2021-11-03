@@ -32,13 +32,15 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
      /* flag 
       * -, +, (space), #, 0 
       */
-      switch(*fmt) {
-        case '-': panic("Not implemented"); fmt++; break;
-        case '+': panic("Not implemented"); fmt++; break;
-        case ' ': panic("Not implemented"); fmt++; break;
-        case '#': panic("Not implemented"); fmt++; break;
-        case '0': w_fill = '0'; fmt++; break;
-        default: ;
+      while(true) {
+        switch(*fmt) {
+          case '-': panic("Not implemented"); fmt++; break;
+          case '+': panic("Not implemented"); fmt++; break;
+          case ' ': panic("Not implemented"); fmt++; break;
+          case '#': panic("Not implemented"); fmt++; break;
+          case '0': w_fill = '0'; fmt++; break;
+          default: break;
+        }
       }
 
      /* width 
