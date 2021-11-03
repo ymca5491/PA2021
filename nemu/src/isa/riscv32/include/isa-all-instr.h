@@ -5,9 +5,9 @@
                       f(mul) f(mulh) f(mulhu) f(div) f(divu) f(rem) f(remu) \
                       f(and) f(or) f(xor) \
                       f(sll) f(srl) f(sra) \
-                      f(sltu) \
+                      f(slt) f(sltu) \
                       f(addi) f(andi) f(ori) f(xori) \
-                      f(slt) f(sltiu) \
+                      f(slti) f(sltiu) \
                       f(slli) f(srli) f(srai) \
                       f(lui) f(auipc) \
                       f(jal) f(jalr) \
