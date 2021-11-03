@@ -17,6 +17,7 @@ int printf(const char *fmt, ...) {
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
   int length = 0;
+  bool pf = true;
   char* str_p;
   char str_t[64];
   int width = -1;
@@ -32,7 +33,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
      /* flag 
       * -, +, (space), #, 0 
       */
-      bool pf = true;
       while(pf) {
         switch(*fmt) {
           case '-': panic("Not implemented"); fmt++; break;
