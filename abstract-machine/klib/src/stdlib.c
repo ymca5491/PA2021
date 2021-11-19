@@ -29,7 +29,7 @@ int atoi(const char* nptr) {
   return x;
 }
 
-char* itoa(long val, char* str, int base) {
+char* itoa(long long val, char* str, int base) {
   /* base = 1, 2, ..., 10, 16 */
   uint8_t buf[64];
   int idx = 0;
