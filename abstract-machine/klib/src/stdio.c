@@ -122,7 +122,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           fmt++;
           break;
         case 'p':
-          w_fill = '0';
+          w_fill = '0'; width = 8 * sizeof(int*);
         case 'x':
           itoa(va_arg(ap, unsigned long), str_t, 16);
           len = strlen(str_t);
