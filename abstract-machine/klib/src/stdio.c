@@ -121,6 +121,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           length += len;
           fmt++;
           break;
+        case 'p':
+          w_fill = '0';
         case 'x':
           itoa(va_arg(ap, unsigned long), str_t, 16);
           len = strlen(str_t);
