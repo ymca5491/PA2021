@@ -109,7 +109,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
     return;
   }
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  printf("0x%x\n", ref_r.pc);
+  printf("0x%x\n, 0x%x\n", ref_r.pc, npc);
 
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
