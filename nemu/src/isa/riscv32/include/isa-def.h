@@ -7,7 +7,7 @@ typedef struct {
   /* mstatus 0x300, mtvec 0x305, mepc 0x341, mcause 0x342 */
   struct {
     rtlreg_t _32;
-  } gpr[0x400];
+  } gpr[32];
 
   vaddr_t pc;
 } riscv32_CPU_state;
