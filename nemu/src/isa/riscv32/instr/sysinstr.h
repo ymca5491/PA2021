@@ -10,12 +10,12 @@ def_EHelper(mret) {
 
 def_EHelper(csrrw) {
     if (ddest != &(gpr(0)))
-        rtl_mv(s, dsrc2, ddest);
-    rtl_mv(s, dsrc1, dsrc2);
+        rtl_mv(s, ddest, dsrc2);
+    rtl_mv(s, dsrc2, dsrc1);
 }
 
 def_EHelper(csrrs) {
-    rtl_mv(s, dsrc2, ddest);
+    rtl_mv(s, ddest, dsrc2);
     if (ddest != &(gpr(0)))
-        rtl_and(s, dsrc1, dsrc2, dsrc2);
+        rtl_mv(s, dsrc2, dsrc1);
 }
