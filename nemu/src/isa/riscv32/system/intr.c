@@ -8,7 +8,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* mstatus 0x300, mtvec 0x305, mepc 0x341, mcause 0x342 */
   gpr(0x341) = epc;
   gpr(0x342) = NO;
-  return gpr(0x305) & 0xfc;
+  return gpr(0x305) & 0xfffffffc;
 }
 
 word_t isa_query_intr() {
