@@ -14,6 +14,7 @@
                       f(lw) f(lh) f(lhu) f(lb) f(lbu) \
                       f(sw) f(sh) f(sb) \
                       f(beq) f(bne) f(bge) f(bgeu) f(blt) f(bltu) \
-                      f(inv) f(nemu_trap)
+                      f(inv) f(nemu_trap) \
+                      f(ecall) //f(mret) f(csrr) f(csrw)
 
 def_all_EXEC_ID();
