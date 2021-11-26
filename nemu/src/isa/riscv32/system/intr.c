@@ -9,7 +9,8 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   gpr(0x341) = epc;
   gpr(0x342) = NO;
 #ifdef CONFIG_ETRACE
-  printf("Exception occurs at pc=0x%08x, cause code: %u", epc, NO);
+  //printf("Exception occurs at pc=0x%08x, cause code: %u\n", epc, NO);
+  log_write("Exception occurs at pc=0x%08x, cause code: %u\n", epc, NO);
 #endif
   return gpr(0x305);
   //return 0;
