@@ -1,6 +1,6 @@
 #include <common.h>
 #include "syscall.h"
-#define STRACE
+//#define STRACE
 
 uintptr_t sys_write(int fd, const void* buf, size_t n);
 
