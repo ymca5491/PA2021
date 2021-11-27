@@ -9,7 +9,7 @@ void do_syscall(Context *c) {
 
   printf("type:%u", a[0]);
   switch (a[0]) {
-    case SYS_yield: yield(); c->GPRx = 0; break;
+    case SYS_yield: yield(); c->mepc += 4; c->GPRx = 0; break;
 
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
