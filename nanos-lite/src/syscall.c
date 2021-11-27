@@ -18,7 +18,7 @@ void do_syscall(Context *c) {
     case SYS_yield: yield(); ret = 0; break;
     case SYS_exit:  halt(a[1]); break;
     case SYS_write: ret = sys_write(a[1], (void *)a[2], a[3]); break;
-    case SYS_brk:   
+    case SYS_brk:   ret = 0; break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 #ifdef STRACE
