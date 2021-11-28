@@ -28,6 +28,7 @@ void do_syscall(Context *c) {
 }
 
 uintptr_t sys_write(int fd, const void* buf, size_t n) {
+  
   switch (fd) {
     case 1: case 2:
       for (int i = 0; i < n; i++) putch(*((char*)(buf) + i));
@@ -36,4 +37,6 @@ uintptr_t sys_write(int fd, const void* buf, size_t n) {
     
     default: return -1; 
   }
+  
+  //fs_read()
 }

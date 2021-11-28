@@ -64,7 +64,16 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
-  return 0;
+  WriteFn write = file_table[fd].write;
+  if (write == NULL) {
+    ramdisk_write(buf, open_offset[fd], len);
+    open_offset[fd] += len;
+    assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+    return len;
+  }
+  else {
+    panic("Not implemented yet");
+  }
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
