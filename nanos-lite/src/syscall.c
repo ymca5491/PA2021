@@ -1,8 +1,7 @@
 #include <common.h>
 #include "syscall.h"
+#include <fs.h>
 //#define STRACE
-
-uintptr_t sys_write(int fd, const void* buf, size_t n);
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -17,7 +16,11 @@ void do_syscall(Context *c) {
   switch (a[0]) {
     case SYS_yield: yield(); ret = 0; break;
     case SYS_exit:  halt(a[1]); break;
-    case SYS_write: ret = sys_write(a[1], (void *)a[2], a[3]); break;
+    case SYS_open:  ret = fs_open((void*)a[1], a[2], a[3]); break;
+    case SYS_read:  ret = fs_read(a[1], (void *)a[2], a[3]); break;
+    case SYS_lseek: ret = fs_lseek(a[1], a[2], a[3]); break;
+    case SYS_write: ret = fs_write(a[1], (void *)a[2], a[3]); break;
+    case SYS_close: ret = fs_close(a[1]); break;
     case SYS_brk:   ret = 0; break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
@@ -25,18 +28,4 @@ void do_syscall(Context *c) {
   printf("Syscall return value: %d\n", ret);
 #endif
   c->GPRx = ret;
-}
-
-uintptr_t sys_write(int fd, const void* buf, size_t n) {
-  
-  switch (fd) {
-    case 1: case 2:
-      for (int i = 0; i < n; i++) putch(*((char*)(buf) + i));
-      return n;
-      break;
-    
-    default: return -1; 
-  }
-  
-  //fs_read()
 }
