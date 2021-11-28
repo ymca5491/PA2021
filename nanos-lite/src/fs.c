@@ -48,7 +48,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  panic("Shouldn't reach here");
+  panic("File not found");
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
