@@ -31,6 +31,68 @@ static Finfo file_table[] __attribute__((used)) = {
 #include "files.h"
 };
 
+static size_t *open_offset;
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+
 void init_fs() {
+  open_offset = malloc(sizeof(size_t) * sizeof(file_table) / sizeof(Finfo));
   // TODO: initialize the size of /dev/fb
+}
+
+int fs_open(const char *pathname, int flags, int mode) {
+  for (int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
+    if (strcmp(file_table[i].name, pathname) == 0) {
+      open_offset[i] = file_table[i].disk_offset;
+      return i;
+    }
+  }
+  panic("Shouldn't reach here");
+}
+
+size_t fs_read(int fd, void *buf, size_t len) {
+  ReadFn read = file_table[fd].read;
+  if (read == NULL) {
+    ramdisk_read(buf, open_offset[fd], len);
+    open_offset[fd] += len;
+    assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+    return len;
+  }
+  else {
+    panic("Not implemented yet");
+  }
+}
+
+size_t fs_write(int fd, const void *buf, size_t len) {
+  return 0;
+}
+
+size_t fs_lseek(int fd, size_t offset, int whence) {
+  switch (whence) {
+    case SEEK_SET:
+      open_offset[fd] = file_table[fd].disk_offset + offset;
+      assert(open_offset[fd] >= file_table[fd].disk_offset);
+      assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+      break;
+
+    case SEEK_CUR:
+      open_offset[fd] += offset;
+      assert(open_offset[fd] >= file_table[fd].disk_offset);
+      assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+      break;
+
+    case SEEK_END:
+      open_offset[fd] = file_table[fd].disk_offset + file_table[fd].size + offset;
+      assert(open_offset[fd] >= file_table[fd].disk_offset);
+      assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+      break;
+
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int fs_close(int fd) {
+  return 0;
 }

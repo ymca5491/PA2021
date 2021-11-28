@@ -34,6 +34,6 @@ uintptr_t sys_write(int fd, const void* buf, size_t n) {
       return n;
       break;
     
-    default: panic("Not implemented");
+    default: return -1; 
   }
 }
