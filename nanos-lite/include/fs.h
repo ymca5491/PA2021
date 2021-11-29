@@ -2,6 +2,7 @@
 #define __FS_H__
 
 #include <common.h>
+#define STRACE
 
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);

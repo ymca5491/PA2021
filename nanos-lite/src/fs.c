@@ -42,6 +42,9 @@ void init_fs() {
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
+#ifdef STRACE
+  printf("Open \"%s\"\n", pathname);
+#endif
   for (int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if (strcmp(file_table[i].name, pathname) == 0) {
       open_offset[i] = file_table[i].disk_offset;
@@ -58,7 +61,9 @@ size_t fs_read(int fd, void *buf, size_t len) {
       (open_offset[fd] + len > file_table[fd].disk_offset + file_table[fd].size) ? 
         file_table[fd].disk_offset + file_table[fd].size - open_offset[fd]:
         len;
-    //printf("Read:%d len:%d\n", open_offset[fd], len);
+#ifdef STRACE
+    printf("Read from \"%s\", offset:%d, len:%d\n", file_table[fd].name, open_offset[fd], len);
+#endif
     ramdisk_read(buf, open_offset[fd], len);
     open_offset[fd] += len;
     assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
@@ -76,6 +81,9 @@ size_t fs_write(int fd, const void *buf, size_t len) {
       (open_offset[fd] + len > file_table[fd].disk_offset + file_table[fd].size) ? 
         file_table[fd].disk_offset + file_table[fd].size - open_offset[fd]:
         len;
+#ifdef STRACE
+    printf("Write into \"%s\", offset:%d, len:%d\n", file_table[fd].name, open_offset[fd], len);
+#endif
     ramdisk_write(buf, open_offset[fd], len);
     open_offset[fd] += len;
     assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
@@ -113,5 +121,8 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 }
 
 int fs_close(int fd) {
+#ifdef STRACE
+    printf("Close \"%s\"\n", file_table[fd].name);
+#endif
   return 0;
 }
