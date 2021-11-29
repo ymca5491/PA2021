@@ -74,7 +74,8 @@ void *_sbrk(intptr_t increment) {
     return (void *)old;
   }
   else {
-    return (void *)-1;
+    //return (void *)-1;
+    panic("mallpc failed!");
   }
 }
 
