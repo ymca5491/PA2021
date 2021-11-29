@@ -6,6 +6,7 @@
 #include <time.h>
 #include "syscall.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 // helper macros
 #define _concat(x, y) x ## y
@@ -75,7 +76,7 @@ void *_sbrk(intptr_t increment) {
   }
   else {
     //return (void *)-1;
-    panic("mallpc failed!");
+    assert(0);
   }
 }
 
