@@ -1,6 +1,10 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
+//#include <nemu.h>
+//#include <riscv.h>
+
+//uintptr_t sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -21,6 +25,7 @@ void do_syscall(Context *c) {
     case SYS_write: ret = fs_write(a[1], (void *)a[2], a[3]); break;
     case SYS_close: ret = fs_close(a[1]); break;
     case SYS_brk:   ret = 0; break;
+    //case SYS_gettimeofday: ret = sys_gettimeofday((struct timeval *)a[1], (struct timezone *)a[2]); break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 #ifdef STRACE
@@ -28,3 +33,14 @@ void do_syscall(Context *c) {
 #endif
   c->GPRx = ret;
 }
+/*
+uintptr_t sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
+  long useconds;
+  useconds = inl(RTC_ADDR + 4);
+  useconds <<= 32;
+  useconds += inl(RTC_ADDR);
+  tv->tv_sec = useconds / 1000000;
+  tv->tv_usec = useconds - 1000000 * tv->tv_sec;
+  return 0;
+}
+*/
