@@ -35,7 +35,7 @@
 
 #ifdef CONFIG_FTRACE
   bool fflag;
-  char fbuf[128];
+  char fbuf[1280];
   #include<ftrace.h>
   int depth_count = 0;
 #endif
