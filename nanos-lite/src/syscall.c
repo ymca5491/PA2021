@@ -1,8 +1,6 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
-//#include <nemu.h>
-//#include <riscv.h>
 
 //uintptr_t sys_gettimeofday(struct timeval *tv, struct timezone *tz);
 
