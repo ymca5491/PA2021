@@ -100,7 +100,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
     default:
       return -1;
   }
-  return 0;
+  return open_offset[fd] - file_table[fd].disk_offset;
 }
 
 int fs_close(int fd) {
