@@ -58,7 +58,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
       (open_offset[fd] + len > file_table[fd].disk_offset + file_table[fd].size) ? 
         file_table[fd].disk_offset + file_table[fd].size - open_offset[fd]:
         len;
-    printf("Read:%d len:%d\n", open_offset[fd], len);
+    //printf("Read:%d len:%d\n", open_offset[fd], len);
     ramdisk_read(buf, open_offset[fd], len);
     open_offset[fd] += len;
     assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
