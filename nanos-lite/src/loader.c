@@ -18,7 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   fs_read(fd, &head, sizeof(Elf_Ehdr));
   assert(*(uint32_t *)head.e_ident == 0x464c457f);
   for (int i = 0; i < head.e_phnum; i++) {
-    assert(fs_lseek(fd, head.e_phoff + i*head.e_phentsize, SEEK_SET) == 0);
+    assert(fs_lseek(fd, head.e_phoff + i*head.e_phentsize, SEEK_SET) >= 0);
     fs_read(fd, &phdr, head.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) == 0);
