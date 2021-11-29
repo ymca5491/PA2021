@@ -5,8 +5,8 @@
 #include <assert.h>
 #include <time.h>
 #include "syscall.h"
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 
 // helper macros
 #define _concat(x, y) x ## y
@@ -71,12 +71,12 @@ void *_sbrk(intptr_t increment) {
   if (_syscall_(SYS_brk, (intptr_t)(pb + increment), 0, 0) == 0) {
     char* old = pb;
     pb += increment;
-    printf("malloc at 0x%p\n", old);
+    //printf("malloc at 0x%p\n", old);
     return (void *)old;
   }
   else {
-    //return (void *)-1;
-    assert(0);
+    return (void *)-1;
+    //assert(0);
   }
 }
 
