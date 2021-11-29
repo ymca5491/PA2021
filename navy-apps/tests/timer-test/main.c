@@ -14,6 +14,7 @@ int main() {
             n++;
             printf("%d.%ds passed\n", n / 2, (n % 2) ? 5 : 0);
         }
+        t = new;
     }
     return 0;
 }
