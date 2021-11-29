@@ -82,19 +82,19 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
     case SEEK_SET:
       open_offset[fd] = file_table[fd].disk_offset + offset;
       assert(open_offset[fd] >= file_table[fd].disk_offset);
-      assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+      assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
       break;
 
     case SEEK_CUR:
       open_offset[fd] += offset;
       assert(open_offset[fd] >= file_table[fd].disk_offset);
-      assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+      assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
       break;
 
     case SEEK_END:
       open_offset[fd] = file_table[fd].disk_offset + file_table[fd].size + offset;
       assert(open_offset[fd] >= file_table[fd].disk_offset);
-      assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
+      assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
       break;
 
     default:
