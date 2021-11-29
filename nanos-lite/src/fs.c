@@ -54,7 +54,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 size_t fs_read(int fd, void *buf, size_t len) {
   ReadFn read = file_table[fd].read;
   if (read == NULL) {
-    printf("%d\n", open_offset[fd]);
+    printf("Read:%d len:%d\n", open_offset[fd], len);
     ramdisk_read(buf, open_offset[fd], len);
     open_offset[fd] += len;
     assert(open_offset[fd] < file_table[fd].disk_offset + file_table[fd].size);
