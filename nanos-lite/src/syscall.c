@@ -33,7 +33,7 @@ void do_syscall(Context *c) {
 }
 
 uintptr_t sys_gettimeofday(void *tv, void *tz) {
-  struct timeval{
+  struct timeval {
     long sec;
     long usec;
   } *time = (struct timeval *)tv;
