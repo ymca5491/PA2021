@@ -71,7 +71,7 @@ void *_sbrk(intptr_t increment) {
   if (_syscall_(SYS_brk, (intptr_t)(pb + increment), 0, 0) == 0) {
     char* old = pb;
     pb += increment;
-    //printf("malloc at 0x%p\n", old);
+    printf("malloc at 0x%p\n", old);
     return (void *)old;
   }
   else {
