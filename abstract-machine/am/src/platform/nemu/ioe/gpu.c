@@ -25,7 +25,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int w = inw(VGACTL_ADDR + 2);
   int x, y;
-  uint32_t* pixels = ctl->pixels;
+  const uint32_t* pixels = ctl->pixels;
   for (int j = 0; j < ctl->h; j++)
     for (int i = 0; i < ctl->w; i++) {
       x = ctl->x + i;
