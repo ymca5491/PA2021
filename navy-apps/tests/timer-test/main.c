@@ -5,7 +5,7 @@ int main() {
     NDL_Init(0);
     uint32_t t = NDL_GetTicks();
     uint32_t new;
-    uint32_t n;
+    uint32_t n = 0;
     while (1) {
         new = NDL_GetTicks();
         int update = (new - t) / 500;
