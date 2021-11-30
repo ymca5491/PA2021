@@ -14,5 +14,6 @@ int main() {
             printf("%d.%ds passed\n", n / 2, (n % 2) ? 5 : 0);
         }
     }
+    NDL_Quit(0);
     return 0;
 }
