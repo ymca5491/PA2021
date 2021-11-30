@@ -1,3 +1,4 @@
+#include <common.h>
 #include <fs.h>
 #include <device.h>
 
@@ -29,7 +30,9 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
-  {"/dev/events", 0, 0, events_read, invalid_write},
+  [FD_FB]     = {"/dev/fd", 0, 0, invalid_read, fb_write},
+  {"/dev/events",    0, 0, events_read,   invalid_write},
+  {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
 #include "files.h"
 };
 
@@ -40,6 +43,7 @@ size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 void init_fs() {
   open_offset = malloc(sizeof(size_t) * sizeof(file_table) / sizeof(Finfo));
   // TODO: initialize the size of /dev/fb
+  file_table[FD_FB].size = io_read(AM_GPU_CONFIG).vmemsz;
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
@@ -65,13 +69,15 @@ size_t fs_read(int fd, void *buf, size_t len) {
 #ifdef STRACE
     printf("Read from \"%s\", offset:%d, len:%d\n", file_table[fd].name, open_offset[fd], len);
 #endif
-    ramdisk_read(buf, open_offset[fd], len);
-    open_offset[fd] += len;
+    int ret = ramdisk_read(buf, open_offset[fd], len);
+    open_offset[fd] += ret;
     assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
-    return len;
+    return ret;
   }
   else {
-    return read(buf, 0, len);
+    int ret = read(buf, open_offset[fd], len);
+    open_offset[fd] += ret;
+    return ret;
   }
 }
 
@@ -85,13 +91,15 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 #ifdef STRACE
     printf("Write into \"%s\", offset:%d, len:%d\n", file_table[fd].name, open_offset[fd], len);
 #endif
-    ramdisk_write(buf, open_offset[fd], len);
-    open_offset[fd] += len;
+    int ret = ramdisk_write(buf, open_offset[fd], len);
+    open_offset[fd] += ret;
     assert(open_offset[fd] <= file_table[fd].disk_offset + file_table[fd].size);
-    return len;
+    return ret;
   }
   else {
-    return write(buf, 0, len);
+    int ret = write(buf, open_offset[fd], len);
+    open_offset[fd] += ret;
+    return ret;
   }
 }
 

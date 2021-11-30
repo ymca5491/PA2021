@@ -48,6 +48,20 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  /* Not nwm_app */
+  else {
+    char buf[128];
+
+    int fd = open("/proc/dispinfo", 0);
+    int ret = read(fd, buf, sizeof(buf));
+    if (ret == sizeof(buf) && buf[sizeof(buf) - 1] != '\0') assert(0); // warning;
+    sscanf(buf, "WIDTH: %d HEIGHT: %d", &screen_w, &screen_h);
+    assert(screen_w >= *w && screen_h >= *h);
+    if (*w == 0 && *h == 0) {
+      *w = screen_w;
+      *h = screen_h;
+    }
+  }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
