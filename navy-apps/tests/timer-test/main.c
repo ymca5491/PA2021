@@ -1,15 +1,14 @@
-#include <sys/time.h>
 #include <stdio.h>
-#include <assert.h>
+#include "/home/ymca/ics2021/navy-apps/libs/libndl/include/NDL.h"
 
 int main() {
-    struct timeval t;
-    struct timeval new;
-    int n = 0;
-    assert(gettimeofday(&t, NULL) == 0);
+    NDL_Init(0);
+    uint32_t t = NDL_GetTicks();
+    uint32_t new;
+    uint32_t n;
     while (1) {
-        assert(gettimeofday(&new, NULL) == 0);
-        int update = ((new.tv_sec - t.tv_sec) * 1000000 + (new.tv_usec - t.tv_usec)) / 500000;
+        new = NDL_GetTicks();
+        int update = (new - t) / 500;
         for (int i = n; i < update; i++) {
             n++;
             printf("%d.%ds passed\n", n / 2, (n % 2) ? 5 : 0);
