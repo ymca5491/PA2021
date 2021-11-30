@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "/home/ymca/ics2021/navy-apps/libs/libndl/include/NDL.h"
+#include <NDL.h>
 
 int main() {
     NDL_Init(0);
