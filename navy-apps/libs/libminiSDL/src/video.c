@@ -13,6 +13,22 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  uint32_t pixels_buf[w * h];
+  uint32_t *pix_to_up;
+  int count = 0;
+  if (s->format->BytesPerPixel == 4) {
+    for (int j = y; j < y + h; j++) {
+      pix_to_up = (uint32_t *)s->pixels + j * (s->w) + x;
+      for (int i = x; i < x + w; i++) {
+        pixels_buf[count] = (*pix_to_up & s->format->Amask >> s->format->Ashift) << 24 |
+                            (*pix_to_up & s->format->Rmask >> s->format->Rshift) << 16 |
+                            (*pix_to_up & s->format->Gmask >> s->format->Gshift) << 8  |
+                            (*pix_to_up & s->format->Bmask >> s->format->Bshift);
+        count++; pix_to_up++;
+      }
+    }
+  }
+  NDL_DrawRect(pixels_buf, x, y, w, h);
 }
 
 // APIs below are already implemented.
