@@ -21,6 +21,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 
   uint32_t pixels_buf[w * h];
   int count = 0;
+  /*
   if (s->format->BytesPerPixel == 4) {
     uint32_t *pix_to_up;
     for (int j = y; j < y + h; j++) {
@@ -47,6 +48,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
       }
     }
   }
+  */
   printf("reach NDL\n");
   NDL_DrawRect(pixels_buf, x, y, w, h);
 }
