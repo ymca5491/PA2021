@@ -1,5 +1,6 @@
 #include <NDL.h>
 #include <SDL.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -11,7 +12,6 @@ static const char *keyname[] = {
 };
 
 int SDL_PushEvent(SDL_Event *ev) {
-  panic("Not implemented\n");
   return 0;
 }
 
@@ -51,7 +51,7 @@ int SDL_WaitEvent(SDL_Event *event) {
       event->type = SDL_KEYUP;
     }
     sscanf(&(buf[3]), "%s\n", kn);
-    for (int i = 0; i < sizeof(keyname); i++) {
+    for (int i = 0; i < sizeof(keyname) / sizeof(char*); i++) {
       if (strcmp(kn , keyname[i]) == 0) {
         event->key.keysym.sym = i;
         return 1;
@@ -64,10 +64,23 @@ int SDL_WaitEvent(SDL_Event *event) {
 }
 
 int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
-  panic("Not implemented\n");
   return 0;
 }
 
 uint8_t* SDL_GetKeyState(int *numkeys) {
-  panic("Not implemented\n");
+  SDL_Event ev;
+  SDL_PollEvent(&ev);
+
+  if (numkeys == NULL) *numkeys = sizeof(keyname) / sizeof(char*);
+  uint8_t* ret = malloc(*numkeys);
+
+  for (int i = 0; i < *numkeys; i++) {
+    if (ev.type = SDL_KEYDOWN && ev.key.keysym.sym == i) {
+      ret[i] = 1;
+    }
+    else {
+      ret[i] = 0;
+    }
+  }
+  return ret;
 }
