@@ -165,9 +165,8 @@ $(CLEAN_ALL):
 	-@$(MAKE) -s -C $@ clean
 .PHONY: clean-all $(CLEAN_ALL)
 
-### Build fsimg and ramdisk for Nanos-lite
-# nslider menu 
-APPS = nterm
+### Build fsimg and ramdisk for Nanos-lite 
+APPS = nslider menu nterm
 TESTS = 
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
