@@ -111,7 +111,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
   }
   else {
-    printf("reach 8bit\n");
+    //printf("reach 8bit\n");
     uint8_t *pix_to_up;
     for (int j = y; j < y + h; j++) {
       pix_to_up = s->pixels + j * (s->w) + x;
@@ -120,12 +120,16 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
                             (uint32_t)(s->format->palette->colors[*pix_to_up].r) << 16 |
                             (uint32_t)(s->format->palette->colors[*pix_to_up].g) << 8  |
                             (uint32_t)(s->format->palette->colors[*pix_to_up].b);
-        printf("0x%x\n", pixels_buf[count]);
+        if (pixels_buf[count] != 0) printf("r: 0x%x g: 0x%x b: 0x%x pixel: 0x%x\n", 
+                                            s->format->palette->colors[*pix_to_up].r,
+                                            s->format->palette->colors[*pix_to_up].g,
+                                            s->format->palette->colors[*pix_to_up].b,
+                                            pixels_buf[count]);
         count++; pix_to_up++;
       }
     }
   }
-  printf("reach NDL\n");
+  //printf("reach NDL\n");
   NDL_DrawRect(pixels_buf, x, y, w, h);
   free(pixels_buf);
 }
