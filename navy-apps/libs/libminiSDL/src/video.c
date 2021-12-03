@@ -111,6 +111,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
   }
   else {
+    printf("reach 8bit\n");
     uint8_t *pix_to_up;
     for (int j = y; j < y + h; j++) {
       pix_to_up = s->pixels + j * (s->w) + x;
