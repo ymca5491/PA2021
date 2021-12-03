@@ -31,7 +31,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
           s->format->Gmask == DEFAULT_GMASK &&
           s->format->Bmask == DEFAULT_BMASK
       ) {
-        memcpy(&(pix_to_up[count]), pix_to_up, 4 * w);
+        memcpy(&(pixels_buf[count]), pix_to_up, 4 * w);
         count += w;
       }
       else {
