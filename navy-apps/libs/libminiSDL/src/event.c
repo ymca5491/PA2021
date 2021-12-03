@@ -30,6 +30,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     printf("%skey\n", kn);
     for (int i = 0; i < sizeof(keyname); i++) {
       if (strcmp(kn , keyname[i]) == 0) {
+        printf("success\n");
         event->key.keysym.sym = i;
         return 1;
       }
