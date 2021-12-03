@@ -28,7 +28,7 @@ void init_proc() {
 
   // load program here
 
-  naive_uload(NULL, "/bin/nterm");
+  naive_uload(NULL, "/bin/menu");
 
 }
 
