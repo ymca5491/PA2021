@@ -7,9 +7,74 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+
+  int x, y, w, h, dx, dy;
+  /* get x, y, w, h */
+  if (srcrect == NULL) {
+    x = y = 0;
+    w = src->w;
+    h = src->h;
+  }
+  else {
+    x = srcrect->x;
+    y = srcrect->y;
+    w = srcrect->w;
+    h = srcrect->h;
+  }
+  if (dstrect == NULL) {
+    dx = dy = 0;
+  }
+  else {
+    dx = dstrect->x;
+    dy = dstrect->y;
+  }
+
+  /* copy */
+  for (int j = 0; j < h; j++) {
+    for (int i = 0; i < w; i++) {
+      if(dst->format->BytesPerPixel == 4) {
+        uint32_t *psrc = src->pixels;
+        uint32_t *pdst = dst->pixels;
+        pdst[(dy + j) * (dst->w) + (dx + i)] = psrc[(y + j) * (src->w) + (x + i)];
+      }
+      else {
+        uint8_t *psrc = src->pixels;
+        uint8_t *pdst = dst->pixels;
+        pdst[(dy + j) * (dst->w) + (dx + i)] = psrc[(y + j) * (src->w) + (x + i)];
+      }
+    }
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  int x, y, w, h;
+  /* get x, y, w, h */
+  if (dstrect == NULL) {
+    x = y = 0;
+    w = dst->w;
+    h = dst->h;
+  }
+  else {
+    x = dstrect->x;
+    y = dstrect->y;
+    w = dstrect->w;
+    h = dstrect->h;
+  }
+
+  /* fill */
+  for (int j = y; j < y + h; j++) {
+    for (int i = x; i < x + w; i++) {
+      if(dst->format->BytesPerPixel == 4) {
+        uint32_t* p = dst->pixels;
+        p[j * (dst->w) + i] = color;
+      }
+      else {
+        uint8_t* p = dst->pixels;
+        p[j * (dst->w) + i] = (uint8_t) color;
+      }
+    }
+  }
+
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
@@ -50,10 +115,10 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     for (int j = y; j < y + h; j++) {
       pix_to_up = s->pixels + j * (s->w) + x;
       for (int i = x; i < x + w; i++) {
-        pixels_buf[count] = (uint32_t)s->format->palette->colors[*pix_to_up].a << 24 |
-                            (uint32_t)s->format->palette->colors[*pix_to_up].r << 16 |
-                            (uint32_t)s->format->palette->colors[*pix_to_up].g << 8  |
-                            (uint32_t)s->format->palette->colors[*pix_to_up].b;
+        pixels_buf[count] = (uint32_t)(s->format->palette->colors[*pix_to_up].a) << 24 |
+                            (uint32_t)(s->format->palette->colors[*pix_to_up].r) << 16 |
+                            (uint32_t)(s->format->palette->colors[*pix_to_up].g) << 8  |
+                            (uint32_t)(s->format->palette->colors[*pix_to_up].b);
         count++; pix_to_up++;
       }
     }
