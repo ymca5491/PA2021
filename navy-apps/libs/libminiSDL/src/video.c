@@ -13,13 +13,14 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  uint32_t *pixels_buf;
   if (!(x || y || w || h)) {
     printf("all zero\n");
     w = s->w;
     h = s->h;
   }
 
-  uint32_t pixels_buf[w * h];
+  pixels_buf = malloc(4 * w * h);
   int count = 0;
   if (s->format->BytesPerPixel == 4) {
     uint32_t *pix_to_up;
