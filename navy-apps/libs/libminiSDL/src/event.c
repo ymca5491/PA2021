@@ -19,20 +19,23 @@ int SDL_PollEvent(SDL_Event *ev) {
 
 int SDL_WaitEvent(SDL_Event *event) {
   char buf[64];
-  char kstate[2];
-  char kname[32];
-  while(1) {
-    if (event->type != SDL_USEREVENT) {
-      NDL_PollEvent(buf, sizeof(buf));
-      sscanf(buf, "%s %s\n", kstate, kname);
-      if (strlen(kstate) != 0) printf("%s: %s\n", kstate, kname);
-      if (strcmp(kstate, "kd") == 0 && event->type == SDL_KEYDOWN) {
-        if (strcmp(kname, keyname[event->key.keysym.sym]) == 0 ) return 1;
-      }
-      else if (strcmp(kstate, "ku") == 0 && event->type == SDL_KEYUP) {
-        if (strcmp(kname, keyname[event->key.keysym.sym]) == 0 ) return 1;
+  char kn[16];
+  while(NDL_PollEvent(buf, sizeof(buf)) == 0);
+  if (buf[0] == 'k') {
+    if (buf[0] == 'd') 
+      event->type = SDL_KEYDOWN;
+    else 
+      event->type = SDL_KEYUP;
+    sscanf(&(buf[3]), "%s\n", kn);
+    for (int i = 0; i < sizeof(keyname); i++) {
+      if (strcmp(kn , keyname[i]) == 0) {
+        event->key.keysym.sym = i;
+        return 1;
       }
     }
+  }
+  else {
+    return 0;
   }
 }
 
