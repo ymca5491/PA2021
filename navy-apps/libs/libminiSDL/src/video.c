@@ -14,9 +14,9 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   uint32_t pixels_buf[w * h];
-  uint32_t *pix_to_up;
   int count = 0;
   if (s->format->BytesPerPixel == 4) {
+    uint32_t *pix_to_up;
     for (int j = y; j < y + h; j++) {
       pix_to_up = (uint32_t *)s->pixels + j * (s->w) + x;
       for (int i = x; i < x + w; i++) {
@@ -24,6 +24,19 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
                             (*pix_to_up & s->format->Rmask >> s->format->Rshift) << 16 |
                             (*pix_to_up & s->format->Gmask >> s->format->Gshift) << 8  |
                             (*pix_to_up & s->format->Bmask >> s->format->Bshift);
+        count++; pix_to_up++;
+      }
+    }
+  }
+  else {
+    uint8_t *pix_to_up;
+    for (int j = y; j < y + h; j++) {
+      pix_to_up = s->pixels + j * (s->w) + x;
+      for (int i = x; i < x + w; i++) {
+        pixels_buf[count] = (uint32_t)s->format->palette->colors[*pix_to_up].a << 24 |
+                            (uint32_t)s->format->palette->colors[*pix_to_up].r << 24 |
+                            (uint32_t)s->format->palette->colors[*pix_to_up].g << 24 |
+                            (uint32_t)s->format->palette->colors[*pix_to_up].b;
         count++; pix_to_up++;
       }
     }
