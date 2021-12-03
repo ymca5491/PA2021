@@ -14,6 +14,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   if (!(x || y || w || h)) {
+    printf("all zero\n");
     w = s->w;
     h = s->h;
   }
@@ -39,8 +40,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
       pix_to_up = s->pixels + j * (s->w) + x;
       for (int i = x; i < x + w; i++) {
         pixels_buf[count] = (uint32_t)s->format->palette->colors[*pix_to_up].a << 24 |
-                            (uint32_t)s->format->palette->colors[*pix_to_up].r << 24 |
-                            (uint32_t)s->format->palette->colors[*pix_to_up].g << 24 |
+                            (uint32_t)s->format->palette->colors[*pix_to_up].r << 16 |
+                            (uint32_t)s->format->palette->colors[*pix_to_up].g << 8  |
                             (uint32_t)s->format->palette->colors[*pix_to_up].b;
         count++; pix_to_up++;
       }
