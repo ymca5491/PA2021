@@ -22,19 +22,15 @@ int SDL_WaitEvent(SDL_Event *event) {
   char kn[16];
   while(NDL_PollEvent(buf, sizeof(buf)) == 0);
   if (buf[0] == 'k') {
-    if (buf[0] == 'd') {
+    if (buf[1] == 'd') {
       event->type = SDL_KEYDOWN;
-      printf("kd ");
     }
     else {
       event->type = SDL_KEYUP;
-      printf("ku ");
     }
     sscanf(&(buf[3]), "%s\n", kn);
-    printf("%skey\n", kn);
     for (int i = 0; i < sizeof(keyname); i++) {
       if (strcmp(kn , keyname[i]) == 0) {
-        printf("success\n");
         event->key.keysym.sym = i;
         return 1;
       }
