@@ -72,6 +72,7 @@ void *malloc(size_t size) {
   if (!addr) addr = heap.start;
   void* ret = addr;
   addr = (char*)addr + size;
+  printf("malloc to 0x%p", addr);
   if (addr > heap.end) panic("Heap overflow\n");
   return ret;
 #endif
