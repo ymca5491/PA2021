@@ -25,6 +25,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     if (event->type != SDL_USEREVENT) {
       NDL_PollEvent(buf, sizeof(buf));
       sscanf(buf, "%s %s\n", kstate, kname);
+      if (strlen(kstate) != 0) printf("%s: %s\n", kstate, kname);
       if (strcmp(kstate, "kd") == 0 && event->type == SDL_KEYDOWN) {
         if (strcmp(kname, keyname[event->key.keysym.sym]) == 0 ) return 1;
       }
