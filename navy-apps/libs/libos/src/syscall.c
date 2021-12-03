@@ -69,9 +69,6 @@ void *_sbrk(intptr_t increment) {
   if (_syscall_(SYS_brk, (intptr_t)(pb + increment), 0, 0) == 0) {
     char* old = pb;
     pb += increment;
-    char buf[64];
-    sprintf(buf, "malloc to 0x%p", pb);
-    putstr(buf);
     return (void *)old;
   }
   else {
