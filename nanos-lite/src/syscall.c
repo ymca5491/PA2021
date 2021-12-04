@@ -1,8 +1,10 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
+#include <proc.h>
 
 uintptr_t sys_gettimeofday(void *tv, void *tz);
+void naive_uload(PCB *pcb, const char *filename);
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -24,6 +26,7 @@ void do_syscall(Context *c) {
     case SYS_close: ret = fs_close(a[1]); break;
     case SYS_brk:   ret = 0; break;
     case SYS_gettimeofday: ret = sys_gettimeofday((void *)a[1], (void *)a[2]); break;
+    case SYS_execve:naive_uload(NULL, (char*)a[1]); ret = -1; break; // should not return
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 #ifdef STRACE
