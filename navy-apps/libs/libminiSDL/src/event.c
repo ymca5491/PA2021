@@ -10,6 +10,7 @@ static const char *keyname[] = {
   "NONE",
   _KEYS(keyname)
 };
+static uint8_t keystate[sizeof(keyname) / sizeof(char*)];
 
 int SDL_PushEvent(SDL_Event *ev) {
   return 0;
@@ -30,6 +31,7 @@ int SDL_PollEvent(SDL_Event *event) {
     for (int i = 0; i < sizeof(keyname); i++) {
       if (strcmp(kn , keyname[i]) == 0) {
         event->key.keysym.sym = i;
+        keystate[i] = buf[1] == 'd' ? 1 : 0;
         return 1;
       }
     }
@@ -54,6 +56,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     for (int i = 0; i < sizeof(keyname) / sizeof(char*); i++) {
       if (strcmp(kn , keyname[i]) == 0) {
         event->key.keysym.sym = i;
+        keystate[i] = buf[1] == 'd' ? 1 : 0;
         return 1;
       }
     }
@@ -68,18 +71,6 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
 }
 
 uint8_t* SDL_GetKeyState(int *numkeys) {
-  SDL_Event ev; 
-  static uint8_t ret[sizeof(keyname) / sizeof(char*)] = {0};
-
   if (numkeys != NULL) *numkeys = sizeof(keyname) / sizeof(char*);
-
-  while(SDL_PollEvent(&ev) != 0) {
-      if (ev.type == SDL_KEYDOWN) {
-        ret[ev.key.keysym.sym] = 1;
-      }
-      else if (ev.type == SDL_KEYUP) {
-        ret[ev.key.keysym.sym] = 0;
-      }
-  }
-  return ret;
+  return keystate;
 }
