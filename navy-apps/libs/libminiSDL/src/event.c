@@ -71,7 +71,7 @@ uint8_t* SDL_GetKeyState(int *numkeys) {
   SDL_Event ev; 
   static uint8_t ret[sizeof(keyname) / sizeof(char*)] = {0};
 
-  *numkeys = sizeof(keyname) / sizeof(char*);
+  if (numkeys != NULL) *numkeys = sizeof(keyname) / sizeof(char*);
 
   while(SDL_PollEvent(&ev) != 0) {
       if (ev.type == SDL_KEYDOWN) {
