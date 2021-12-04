@@ -25,7 +25,7 @@ static void sh_prompt() {
 static void sh_handle_cmd(const char *cmd) {
   char args[32];
   sscanf(cmd, "%s\n", args);
-  execve(args, NULL, NULL);
+  execvp(args, NULL);
 }
 
 void builtin_sh_run() {
