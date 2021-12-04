@@ -69,12 +69,13 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
 
 uint8_t* SDL_GetKeyState(int *numkeys) {
   SDL_Event ev;
+  int n;
+
   SDL_PollEvent(&ev);
+  if (numkeys == NULL) n = sizeof(keyname) / sizeof(char*); else n = *numkeys;
+  uint8_t* ret = malloc(n);
 
-  if (numkeys == NULL) *numkeys = sizeof(keyname) / sizeof(char*);
-  uint8_t* ret = malloc(*numkeys);
-
-  for (int i = 0; i < *numkeys; i++) {
+  for (int i = 0; i < n; i++) {
     if (ev.type = SDL_KEYDOWN && ev.key.keysym.sym == i) {
       ret[i] = 1;
     }
