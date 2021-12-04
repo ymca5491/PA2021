@@ -120,11 +120,13 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
                             (uint32_t)(s->format->palette->colors[*pix_to_up].r) << 16 |
                             (uint32_t)(s->format->palette->colors[*pix_to_up].g) << 8  |
                             (uint32_t)(s->format->palette->colors[*pix_to_up].b);
+        /*
         if (pixels_buf[count] != 0) printf("r: 0x%x g: 0x%x b: 0x%x pixel: 0x%x\n", 
                                             s->format->palette->colors[*pix_to_up].r,
                                             s->format->palette->colors[*pix_to_up].g,
                                             s->format->palette->colors[*pix_to_up].b,
                                             pixels_buf[count]);
+        */
         count++; pix_to_up++;
       }
     }
