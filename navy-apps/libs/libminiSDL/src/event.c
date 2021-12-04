@@ -76,7 +76,7 @@ uint8_t* SDL_GetKeyState(int *numkeys) {
   uint8_t* ret = malloc(n);
 
   for (int i = 0; i < n; i++) {
-    if (ev.type = SDL_KEYDOWN && ev.key.keysym.sym == i) {
+    if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == i) {
       ret[i] = 1;
     }
     else {
