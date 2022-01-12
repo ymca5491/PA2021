@@ -53,7 +53,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   printf("envp at 0x%p pointing 0x%p, pcb from 0x%p to 0x%p\n", &envp, envp, kstack.start, kstack.end);
   pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
   printf("envp at 0x%p pointing 0x%p, pcb from 0x%p to 0x%p\n", &envp, envp, kstack.start, kstack.end);
-  //printf("%s\n", envp[0]);
+  if (envp[0] != NULL) printf("%s\n", envp[0]);
   for (int i = 0; envp[i] != NULL; i++) {
      printf("uload[%d]: %s\n", i, envp[i]);
   }
