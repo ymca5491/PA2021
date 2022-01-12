@@ -50,12 +50,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
+  printf("envp at 0x%p pointing 0x%p, pcb from 0x%p to 0x%p\n", &envp, envp, kstack.start, kstack.end);
   pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
 
   for (int i = 0; envp[i] != NULL; i++) {
      printf("uload[%d]: %s\n", i, envp[i]);
   }
-  
+
   void *st_top = new_page(8) + 8 * PGSIZE;  // 32kb for user stack
   char *buf[64];
   uint32_t c = 0, size;
