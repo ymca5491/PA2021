@@ -71,6 +71,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
   buf[c++] = NULL;
 
+  printf("Finish loading");
   size = c * sizeof(char *);
   st_top -= size;
   memcpy(st_top, buf, size);
