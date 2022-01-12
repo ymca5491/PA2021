@@ -6,8 +6,8 @@
 intptr_t sys_gettimeofday(void *tv, void *tz);
 intptr_t sys_execve(const char *filename, char *const argv[], char *const envp[]);
 
-void naive_uload(PCB *pcb, const char *filename);
-
+//void naive_uload(PCB *pcb, const char *filename);
+char *empty[] = {NULL};
 void switch_boot_pcb();
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
@@ -23,7 +23,8 @@ void do_syscall(Context *c) {
 #endif
   switch (a[0]) {
     case SYS_yield: yield(); ret = 0; break;
-    case SYS_exit:  naive_uload(NULL, "/bin/nterm"); ret = a[1]; break;// halt(a[1]); break;
+    case SYS_exit:
+      sys_execve("/bin/nterm", empty, empty); ret = a[1]; break;// halt(a[1]); break;
     case SYS_open:  ret = fs_open((char*)a[1], a[2], a[3]); break;
     case SYS_read:  ret = fs_read(a[1], (void *)a[2], a[3]); break;
     case SYS_lseek: ret = fs_lseek(a[1], a[2], a[3]); break;
