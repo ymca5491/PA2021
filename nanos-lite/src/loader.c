@@ -55,24 +55,24 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   int argc;
 
   for (int i = 0; argv[i] != NULL; i++) {
-    printf("argv[%d] = %s", i, argv[i]);
+    //printf("argv[%d] = %s", i, argv[i]);
     size = strlen(argv[i]) + 1;
     st_top -= size;
     buf[c++] = memcpy(st_top, argv[i], size);
   }
   argc = c;
   buf[c++] = NULL;
-  printf("Pass argv\n");
+  //printf("Pass argv\n");
 
   for (int i = 0; envp[i] != NULL; i++) {
     //printf("envp[%d] = %s", i, envp[i]);
-    //size = strlen(envp[i]) + 1;
+    size = strlen(envp[i]) + 1;
     st_top -= 0;
-    //buf[c++] = memcpy(st_top, envp[i], size);
+    buf[c++] = memcpy(st_top, envp[i], size);
   }
   buf[c++] = NULL;
 
-  printf("Finish loading");
+  //printf("Pass envp\n");
   size = c * sizeof(char *);
   st_top -= size;
   memcpy(st_top, buf, size);
