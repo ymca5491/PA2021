@@ -6,7 +6,7 @@ static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
 
-void naive_uload(PCB *pcb, const char *filename);
+//void naive_uload(PCB *pcb, const char *filename);
 void context_kload(PCB *pcb, void (*entry)(), void *arg);
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
@@ -31,9 +31,11 @@ void init_proc() {
   // load program here
 
   char *empty[] = {NULL};
-  //char *argv_pal[] = {"--skip", NULL};
-  context_kload(&pcb[0], hello_fun, NULL);
-  context_uload(&pcb[1], "/bin/pal", empty, empty);
+  char *argv_exec[] = {"/bin/exec-test", 0, NULL};
+  char *argv_pal[] = {"--skip", NULL};
+  //context_kload(&pcb[0], hello_fun, NULL);
+  context_uload(&pcb[0], "/bin/exec-test", argv_exec, empty);
+  context_uload(&pcb[1], "/bin/pal", argv_pal, empty);
   switch_boot_pcb();
 
   //naive_uload(NULL, "/bin/nterm");

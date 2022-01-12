@@ -56,7 +56,8 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  panic("\"%s\" not found", pathname);
+  //panic("\"%s\" not found", pathname);
+  return -1; // if file not exist
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {

@@ -1,6 +1,7 @@
 #include <proc.h>
 #include <elf.h>
 #include <fs.h>
+#include <memory.h>
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -48,7 +49,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
   pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
 
-  void *st_top = heap.end;
+  void *st_top = new_page(8) + 8 * PGSIZE;  // 32kb for user stack
   char *buf[64];
   uint32_t c = 0, size;
   int argc;
