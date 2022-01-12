@@ -31,9 +31,9 @@ void init_proc() {
   // load program here
 
   char *empty[] = {NULL};
-  char *argv_pal[] = {"--skip", NULL};
+  //char *argv_pal[] = {"--skip", NULL};
   context_kload(&pcb[0], hello_fun, NULL);
-  context_uload(&pcb[1], "/bin/pal", argv_pal, empty);
+  context_uload(&pcb[1], "/bin/pal", empty, empty);
   switch_boot_pcb();
 
   //naive_uload(NULL, "/bin/nterm");
