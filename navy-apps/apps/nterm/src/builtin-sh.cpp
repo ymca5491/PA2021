@@ -34,7 +34,7 @@ static void sh_handle_cmd(const char *cmd) {
     cmd++;
     sscanf(cmd, "%s", &buf[argc][0]);
     argv[argc] = &buf[argc][0];
-    printf("%s\n", argv[argc]);
+    //printf("%s\n", argv[argc]);
     argc++;
     cmd = strchr(cmd, ' ');
   }
