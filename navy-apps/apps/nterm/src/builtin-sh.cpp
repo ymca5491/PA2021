@@ -40,7 +40,7 @@ static void sh_handle_cmd(const char *cmd) {
   }
   argv[argc] = NULL;
 
-  execvp(args, argv);
+  //execvp(args, argv);
 }
 
 void builtin_sh_run() {
