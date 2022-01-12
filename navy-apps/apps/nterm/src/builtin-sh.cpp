@@ -23,24 +23,20 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
-  char args[32];
   char buf[32][32];
   char *argv[32];
-  sscanf(cmd, "%s\n", args);
-  //printf("%s\n", args);
-  cmd = strchr(cmd, ' ');
   int argc = 0;
   while (cmd != NULL) {
-    cmd++;
     sscanf(cmd, "%s", &buf[argc][0]);
     argv[argc] = &buf[argc][0];
     //printf("%s\n", argv[argc]);
     argc++;
     cmd = strchr(cmd, ' ');
+    if (cmd != 0) cmd++;
   }
   argv[argc] = NULL;
 
-  execvp(args, argv);
+  execvp(argv[0], argv);
 }
 
 void builtin_sh_run() {
