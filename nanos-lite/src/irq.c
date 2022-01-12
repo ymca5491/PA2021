@@ -1,9 +1,10 @@
 #include <common.h>
 void do_syscall(Context *c);
+Context* schedule(Context *prev);
 
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
-    case EVENT_YIELD: printf("YIELD from Hatsune Miku\n"); c->mepc += 4; break;
+    case EVENT_YIELD: c->mepc += 4; return schedule(c);
     case EVENT_SYSCALL: do_syscall(c); c->mepc += 4; break;
     default: panic("Unhandled event ID = %d", e.event);
   }
