@@ -22,12 +22,12 @@
   void iringbuf_display() {
     for (int i = 0; i < RINGBUF_SIZE; i++) {
       if (i == ring_count) {
-        //printf("-->%s\n", ringbuf[i]);
-        log_write("-->%s\n", ringbuf[i]);
+        printf("-->%s\n", ringbuf[i]);
+        //log_write("-->%s\n", ringbuf[i]);
       }
       else {
         //printf("   %s\n", ringbuf[i]);
-        log_write("   %s\n", ringbuf[i]);
+        //log_write("   %s\n", ringbuf[i]);
       }
     }
   }
