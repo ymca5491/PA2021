@@ -45,6 +45,7 @@ void context_kload(PCB *pcb, void (*entry)(), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
+  if (envp[0] != NULL) printf("%p\n", envp[0]);
   for (int i = 0; envp[i] != NULL; i++) {
      printf("uload[%d]: %s\n", i, envp[i]);
   }
