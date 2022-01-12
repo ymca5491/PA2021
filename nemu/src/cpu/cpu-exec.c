@@ -26,7 +26,7 @@
         //log_write("-->%s\n", ringbuf[i]);
       }
       else {
-        //printf("   %s\n", ringbuf[i]);
+        printf("   %s\n", ringbuf[i]);
         //log_write("   %s\n", ringbuf[i]);
       }
     }
