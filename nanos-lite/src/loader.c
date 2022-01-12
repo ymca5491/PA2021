@@ -45,22 +45,6 @@ void context_kload(PCB *pcb, void (*entry)(), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
-  if (envp[0] != NULL) printf("%p\n", envp[0]);
-  for (int i = 0; envp[i] != NULL; i++) {
-     printf("uload[%d]: %s\n", i, envp[i]);
-  }
-  uintptr_t entry = loader(pcb, filename);
-  if (envp[0] != NULL) printf("%p\n", envp[0]);
-  Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
-  printf("envp at 0x%p pointing 0x%p, pcb from 0x%p to 0x%p\n", &envp, envp, kstack.start, kstack.end);
-  if (envp[0] != NULL) printf("%p\n", envp[0]);
-  pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
-  printf("envp at 0x%p pointing 0x%p, pcb from 0x%p to 0x%p\n", &envp, envp, kstack.start, kstack.end);
-  if (envp[0] != NULL) printf("%p\n", envp[0]);
-  for (int i = 0; envp[i] != NULL; i++) {
-     printf("uload[%d]: %s\n", i, envp[i]);
-  }
-
   void *st_top = new_page(8) + 8 * PGSIZE;  // 32kb for user stack
   char *buf[64];
   uint32_t c = 0, size;
@@ -77,7 +61,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   //printf("Pass argv\n");
 
   for (int i = 0; envp[i] != NULL; i++) {
-    printf("envp[%d] = %s\n", i, envp[i]);
+    //printf("envp[%d] = %s\n", i, envp[i]);
     size = strlen(envp[i]) + 1;
     st_top -= size;
     buf[c++] = memcpy(st_top, envp[i], size);
@@ -91,6 +75,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   st_top -= sizeof(int);
   *(int *)st_top = argc;
+
+  uintptr_t entry = loader(pcb, filename);
+  Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
+  pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
 
   pcb->cp->GPRx = (uintptr_t)st_top;
 
