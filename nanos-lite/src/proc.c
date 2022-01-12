@@ -45,7 +45,7 @@ void init_proc() {
 Context* schedule(Context *prev) {
   // save the context pointer
   current->cp = prev;
-
+  printf("pcb[0] at 0x%p", &pcb[0]);
   // always select pcb[0] as the new process
   current = &pcb[0];
   //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
