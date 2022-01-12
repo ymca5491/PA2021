@@ -43,10 +43,39 @@ void context_kload(PCB *pcb, void (*entry)(), void *arg) {
   pcb->cp = kcontext(kstack, entry, arg);
 }
 
-void context_uload(PCB *pcb, const char *filename) {
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
   pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
-  pcb->cp->GPRx = (uintptr_t)heap.end;
+
+  void *st_top = heap.end;
+  char *buf[64];
+  uint32_t c = 0, size;
+  int argc;
+
+  for (int i = 0; argv[i] != NULL; i++) {
+    size = strlen(argv[i]) + 1;
+    st_top -= size;
+    buf[c++] = memcpy(st_top, argv[i], size);
+  }
+  argc = c;
+  buf[c++] = NULL;
+
+  for (int i = 0; envp[i] != NULL; i++) {
+    size = strlen(envp[i]) + 1;
+    st_top -= size;
+    buf[c++] = memcpy(st_top, envp[i], size);
+  }
+  buf[c++] = NULL;
+
+  size = c * sizeof(char *);
+  st_top -= size;
+  memcpy(st_top, buf, size);
+
+  st_top -= sizeof(int);
+  *(int *)st_top = argc;
+
+  pcb->cp->GPRx = (uintptr_t)st_top;
+
 }
 
