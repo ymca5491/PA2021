@@ -52,6 +52,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
   pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
 
+  for (int i = 0; envp[i] != NULL; i++) {
+     printf("uload[%d]: %s\n", i, envp[i]);
+  }
+  
   void *st_top = new_page(8) + 8 * PGSIZE;  // 32kb for user stack
   char *buf[64];
   uint32_t c = 0, size;
@@ -68,7 +72,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   //printf("Pass argv\n");
 
   for (int i = 0; envp[i] != NULL; i++) {
-    printf("envp[%d] = %s", i, envp[i]);
+    printf("envp[%d] = %s\n", i, envp[i]);
     size = strlen(envp[i]) + 1;
     st_top -= size;
     buf[c++] = memcpy(st_top, envp[i], size);
