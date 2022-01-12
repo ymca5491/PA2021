@@ -43,3 +43,10 @@ void context_kload(PCB *pcb, void (*entry)(), void *arg) {
   pcb->cp = kcontext(kstack, entry, arg);
 }
 
+void context_uload(PCB *pcb, const char *filename) {
+  uintptr_t entry = loader(pcb, filename);
+  Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
+  pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
+  pcb->cp->GPRx = (uintptr_t)heap.end;
+}
+

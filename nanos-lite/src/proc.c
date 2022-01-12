@@ -8,6 +8,7 @@ PCB *current = NULL;
 
 void naive_uload(PCB *pcb, const char *filename);
 void context_kload(PCB *pcb, void (*entry)(), void *arg);
+void context_uload(PCB *pcb, const char *filename);
 
 void switch_boot_pcb() {
   current = &pcb_boot;
@@ -30,7 +31,7 @@ void init_proc() {
   // load program here
 
   context_kload(&pcb[0], hello_fun, NULL);
-  context_kload(&pcb[1], hello_fun, (void *)-1);
+  context_uload(&pcb[1], "/bin/pal");
   switch_boot_pcb();
 
   //naive_uload(NULL, "/bin/nterm");
