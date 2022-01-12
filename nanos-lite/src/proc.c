@@ -37,6 +37,8 @@ void init_proc() {
   context_uload(&pcb[0], "/bin/nterm", empty, empty);
   //context_uload(&pcb[1], "/bin/pal", argv_pal, empty);
   switch_boot_pcb();
+  printf("pcb[0] at 0x%p", &pcb[0]);
+
 
   //naive_uload(NULL, "/bin/nterm");
 
@@ -45,7 +47,6 @@ void init_proc() {
 Context* schedule(Context *prev) {
   // save the context pointer
   current->cp = prev;
-  printf("pcb[0] at 0x%p", &pcb[0]);
   // always select pcb[0] as the new process
   current = &pcb[0];
   //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
