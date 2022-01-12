@@ -5,8 +5,10 @@
 
 intptr_t sys_gettimeofday(void *tv, void *tz);
 intptr_t sys_execve(const char *filename, char *const argv[], char *const envp[]);
-void switch_boot_pcb();
+
 void naive_uload(PCB *pcb, const char *filename);
+
+void switch_boot_pcb();
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
 void do_syscall(Context *c) {
