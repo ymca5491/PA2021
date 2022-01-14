@@ -3,9 +3,9 @@
 
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MEM_TYPE_IFETCH) == MMU_TRANSLATE) {
-    //printf("Ifetch before tr: 0x%x\n", addr);
+    printf("Ifetch before tr: 0x%x\n", addr);
     addr = isa_mmu_translate(addr, len, MEM_TYPE_IFETCH);
-    //printf("Ifetch after  tr: 0x%x\n", addr);
+    printf("Ifetch after  tr: 0x%x\n", addr);
     return paddr_read(addr, len);
   }
   else if (isa_mmu_check(addr, len, MEM_TYPE_IFETCH) == MMU_DIRECT){
