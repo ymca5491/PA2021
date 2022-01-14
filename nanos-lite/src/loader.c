@@ -25,7 +25,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, &phdr, head.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) >= 0);
-      printf("load paddr = 0x%x, vaddr = 0x%x", phdr.p_paddr, phdr.p_vaddr);
+      printf("load paddr = 0x%x, vaddr = 0x%x, size = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_filesz);
       if ((phdr.p_paddr & 0xfffff000) > vpg) {
         vpg = phdr.p_paddr & 0xfffff000;
         ppg = new_page(1);
