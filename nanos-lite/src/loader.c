@@ -32,7 +32,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       ppg = (uintptr_t)new_page(nrpg);
       pa = ppg | offset;
       for (int i = 0; i < nrpg; i++) {
-        printf("Mapping 0x%x to 0x%x\n", vpg + i*PGSIZE, ppg + i*PGSIZE);
+        //printf("Mapping 0x%x to 0x%x\n", vpg + i*PGSIZE, ppg + i*PGSIZE);
         map(&pcb->as, (void *)vpg + i*PGSIZE, (void *)ppg + i*PGSIZE, 0);
       }
       fs_read(fd, (void *)pa, phdr.p_filesz);
