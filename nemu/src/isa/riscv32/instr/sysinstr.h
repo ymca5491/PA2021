@@ -5,9 +5,9 @@ def_EHelper(ecall) {
 }
 
 def_EHelper(mret) {
-    rtl_andi(s, s0, &gpr(0x300), 0x80);
-    rtl_srli(s, s0, s0, 4);
-    rtl_ori(s, &gpr(0x300), s0, 0x80);
+    //rtl_andi(s, s0, &gpr(0x300), 0x80);
+    //rtl_srli(s, s0, s0, 4);
+    //rtl_ori(s, &gpr(0x300), s0, 0x80);
     rtl_j(s, gpr(0x341));
 }
 
