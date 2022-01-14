@@ -53,7 +53,7 @@ Context* schedule(Context *prev) {
   // always select pcb[0] as the new process
   //current = &pcb[0];
   current = (counter == 0 ? &pcb[0] : &pcb[1]);
-  counter++; counter %= 10;
+  counter++; counter %= 100;
 
   // then return the new context
   return current->cp;
