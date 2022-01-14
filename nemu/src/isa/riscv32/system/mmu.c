@@ -21,5 +21,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 }
 
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
+  printf("read satp = 0x%x\n", satp);
   return satp >> 31 == 1 ? MMU_TRANSLATE: MMU_DIRECT;
 }
