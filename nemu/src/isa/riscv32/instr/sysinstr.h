@@ -9,7 +9,7 @@ def_EHelper(mret) {
     rtl_srli(s, s0, s0, 4);
     rtl_ori(s, s0, s0, 0x80);
     rtl_andi(s, s1, &gpr(0x300), 0xffffff77);
-    //rtl_or(s, &gpr(0x300), s0, s1);
+    rtl_or(s, &gpr(0x300), s0, s1);
     rtl_j(s, gpr(0x341));
 }
 
