@@ -30,13 +30,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       vpg = phdr.p_paddr;
       ppg = (uintptr_t)new_page(nrpg);
       for (int i = 0; i < nrpg; i++) {
-        printf("Mapping 0x%x to 0x%x\n", vpg + i * PGSIZE, ppg + i * PGSIZE);
-        map(&pcb->as, (void *)vpg + i * PGSIZE, (void *)ppg + i * PGSIZE, 0);
+        printf("Mapping 0x%x to 0x%x\n", vpg + i*PGSIZE, ppg + i*PGSIZE);
+        map(&pcb->as, (void *)vpg + i*PGSIZE, (void *)ppg + i*PGSIZE, 0);
       }
       fs_read(fd, (void *)ppg, phdr.p_filesz);
       for (char *p = (char *)ppg + phdr.p_filesz; p != (char *)ppg + phdr.p_memsz; p++) {
         *p = 0;
       }
+      pcb->max_brk = pcb->max_brk > ppg + phdr.p_memsz - 1 ? pcb->max_brk : ppg + phdr.p_memsz - 1;
     }
   }
   fs_close(fd);

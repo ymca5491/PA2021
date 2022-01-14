@@ -8,6 +8,7 @@ intptr_t sys_execve(const char *filename, char *const argv[], char *const envp[]
 
 //void naive_uload(PCB *pcb, const char *filename);
 char *empty[] = {NULL};
+int mm_brk(uintptr_t brk);
 void switch_boot_pcb();
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
@@ -30,7 +31,7 @@ void do_syscall(Context *c) {
     case SYS_lseek: ret = fs_lseek(a[1], a[2], a[3]); break;
     case SYS_write: ret = fs_write(a[1], (void *)a[2], a[3]); break;
     case SYS_close: ret = fs_close(a[1]); break;
-    case SYS_brk:   ret = 0; break;
+    case SYS_brk:   ret = mm_brk(a[1]); break;
     case SYS_gettimeofday: ret = sys_gettimeofday((void *)a[1], (void *)a[2]); break;
     case SYS_execve:ret = sys_execve((char*)a[1], (char**)a[2], (char**)a[3]); break; // return -2 when file not found
     default: panic("Unhandled syscall ID = %d", a[0]);
