@@ -21,5 +21,5 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 }
 
 int isa_mmu_check(vaddr_t vaddr, int len, int type) {
-  return satp >> 31 ? MMU_TRANSLATE: MMU_DIRECT;
+  return satp >> 31 == 1 ? MMU_TRANSLATE: MMU_DIRECT;
 }
