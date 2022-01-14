@@ -17,5 +17,5 @@ def_EHelper(csrrw) {
 def_EHelper(csrrs) {
     rtl_mv(s, ddest, dsrc2);
     if (ddest != &(gpr(0)))
-        rtl_mv(s, dsrc2, dsrc1);
+        rtl_or(s, dsrc2, dsrc2, dsrc1);
 }
