@@ -47,11 +47,13 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
+  static int counter = 0;
   // save the context pointer
   current->cp = prev;
   // always select pcb[0] as the new process
   //current = &pcb[0];
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = (counter == 0 ? &pcb[0] : &pcb[1]);
+  counter++; counter %= 10;
 
   // then return the new context
   return current->cp;
