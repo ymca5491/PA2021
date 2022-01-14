@@ -15,6 +15,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   Assert((paddr & 0x1) == 1, "Level 0 page table isn't valid\n");
   paddr = (paddr & 0xfffff000) | offset;
   Assert(paddr == vaddr, "va != pa/n");
+  printf("after translation!\n");
   return paddr;
 }
 
