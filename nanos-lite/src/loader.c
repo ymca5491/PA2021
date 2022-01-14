@@ -15,6 +15,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   //TODO();
   Elf_Ehdr head;
   Elf_Phdr phdr;
+  uintptr_t vpg = 0, offset;
+  void *ppg = NULL, *paddr;
   int fd = fs_open(filename, 0, 0);
   fs_read(fd, &head, sizeof(Elf_Ehdr));
   assert(*(uint32_t *)head.e_ident == 0x464c457f);
@@ -23,8 +25,15 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, &phdr, head.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) >= 0);
-      fs_read(fd, (void *)phdr.p_vaddr, phdr.p_filesz);
-      for (char *p = (char *)phdr.p_vaddr + phdr.p_filesz; p != (char *)phdr.p_vaddr + phdr.p_memsz; p++) {
+      if ((phdr.p_paddr & 0xfffff000) > vpg) {
+        vpg = phdr.p_paddr & 0xfffff000;
+        ppg = new_page(1);
+        map(&pcb->as, (void *)vpg, ppg, 0);
+      }
+      offset = phdr.p_paddr & 0xfff;
+      paddr = (void *)((uintptr_t)ppg | offset);
+      fs_read(fd, paddr, phdr.p_filesz);
+      for (char *p = (char *)paddr + phdr.p_filesz; p != (char *)paddr + phdr.p_memsz; p++) {
         *p = 0;
       }
     }
@@ -45,7 +54,15 @@ void context_kload(PCB *pcb, void (*entry)(), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
-  void *st_top = new_page(8) + 8 * PGSIZE;  // 32kb for user stack
+  protect(&pcb->as); // apply for space
+  void *st_top = new_page(8) + (PGSIZE << 3);  // 32kb for user stack
+  void *pa = st_top, *va = pcb->as.area.end ;
+  for (int i = 0; i < 8; i++) {
+    pa -= PGSIZE;
+    va -= PGSIZE;
+    map(&pcb->as, va, pa, 0);
+  }
+  
   char *buf[64];
   uint32_t c = 0, size;
   int argc;
@@ -78,7 +95,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   uintptr_t entry = loader(pcb, filename);
   Area kstack = {.start = (void *)pcb, .end = (void *)pcb + sizeof(PCB)};
-  pcb->cp = ucontext(NULL, kstack, (void (*)())entry);
+  pcb->cp = ucontext(&pcb->as, kstack, (void (*)())entry);
 
   pcb->cp->GPRx = (uintptr_t)st_top;
 
