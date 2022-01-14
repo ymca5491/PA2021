@@ -4,7 +4,7 @@
 #define satp cpu.gpr[0x180]._32
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uintptr_t vpn1, vpn0, offset;
-  paddr_t p1 = satp << 10, p0, paddr;
+  paddr_t p1 = satp << 12, p0, paddr;
   offset = vaddr & 0xfff;
   vpn1 = (uintptr_t)vaddr >> 22;
   vpn0 = ((uintptr_t)vaddr & 0x3ff000) >> 12;
