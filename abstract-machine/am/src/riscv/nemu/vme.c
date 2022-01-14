@@ -77,7 +77,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   vpn1 = (uintptr_t)va >> 22;
   vpn0 = ((uintptr_t)va & 0x3ff000) >> 12;
   if (p1[vpn1] == 0) {
-    p1[vpn1] = (PTE)pgalloc_usr(PGSIZE); 
+    p1[vpn1] = (PTE)pgalloc_usr(PGSIZE);
   }
   p0 = (PTE *)p1[vpn1];
   p0[vpn0] = ppn << 12;
