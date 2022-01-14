@@ -1,5 +1,8 @@
 # Makefile for Navy Applications and Libraries
 
+# add support for VME
+VME = 1
+
 ### *Get a more readable version of this Makefile* by `make html` (requires python-markdown)
 html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
