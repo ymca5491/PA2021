@@ -10,10 +10,10 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   vpn1 = (uintptr_t)vaddr >> 22;
   vpn0 = ((uintptr_t)vaddr & 0x3ff000) >> 12;
   p0 = paddr_read(p1 + vpn1 * sizeof(paddr_t), sizeof(paddr_t));
-  //Assert((p0 & 0x1) == 1, "Level 1 page table isn't valid at va = 0x%x", vaddr);
+  Assert((p0 & 0x1) == 1, "Level 1 page table isn't valid at va = 0x%x", vaddr);
   p0 &= 0xfffffffe;
   paddr = paddr_read(p0 + vpn0 * sizeof(paddr_t), sizeof(paddr_t));
-  //Assert((paddr & 0x1) == 1, "Level 0 page table isn't valid at va = 0x%x", vaddr);
+  Assert((paddr & 0x1) == 1, "Level 0 page table isn't valid at va = 0x%x", vaddr);
   paddr = (paddr & 0xfffff000) | offset;
   //Assert(paddr == vaddr, "va != pa");
   //printf("after translation!\n");
