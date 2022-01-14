@@ -52,7 +52,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *cp = (Context *)(kstack.end - sizeof(Context));
   cp->mepc = (intptr_t)entry;
-  cp->mstatus = 0x80; // for mret set MIE = MPIE, set MPIE = 1 here;
+  cp->mstatus = 0x8; // for mret set MIE = MPIE, set MPIE = 1 here;
   cp->gpr[10] = (intptr_t)arg; // a0
   return cp;
 }
