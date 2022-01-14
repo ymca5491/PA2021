@@ -15,7 +15,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   //TODO();
   Elf_Ehdr head;
   Elf_Phdr phdr;
-  uintptr_t vpg, ppg, nrpg;
+  uintptr_t offset, vpg, ppg, pa, nrpg;
   int fd = fs_open(filename, 0, 0);
   fs_read(fd, &head, sizeof(Elf_Ehdr));
   assert(*(uint32_t *)head.e_ident == 0x464c457f);
@@ -26,18 +26,20 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) >= 0);
       printf("load paddr = 0x%x, vaddr = 0x%x, size = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_memsz);
       // sections are aligned with page size
-      nrpg = (phdr.p_memsz >> 12) + 1;
-      vpg = phdr.p_paddr;
+      nrpg = ((phdr.p_paddr + phdr.p_memsz) >> 12) - (phdr.p_paddr >> 12) + 1;
+      vpg = phdr.p_paddr & 0xfffff000;
+      offset = phdr.p_paddr & 0xfff;
       ppg = (uintptr_t)new_page(nrpg);
+      pa = ppg | offset;
       for (int i = 0; i < nrpg; i++) {
         printf("Mapping 0x%x to 0x%x\n", vpg + i*PGSIZE, ppg + i*PGSIZE);
         map(&pcb->as, (void *)vpg + i*PGSIZE, (void *)ppg + i*PGSIZE, 0);
       }
-      fs_read(fd, (void *)ppg, phdr.p_filesz);
-      for (char *p = (char *)ppg + phdr.p_filesz; p != (char *)ppg + phdr.p_memsz; p++) {
+      fs_read(fd, (void *)pa, phdr.p_filesz);
+      for (char *p = (char *)pa + phdr.p_filesz; p != (char *)pa + phdr.p_memsz; p++) {
         *p = 0;
       }
-      pcb->max_brk = pcb->max_brk > ppg + phdr.p_memsz - 1 ? pcb->max_brk : ppg + phdr.p_memsz - 1;
+      pcb->max_brk = pcb->max_brk > phdr.p_paddr + phdr.p_memsz - 1 ? pcb->max_brk : phdr.p_paddr + phdr.p_memsz - 1;
     }
   }
   fs_close(fd);
