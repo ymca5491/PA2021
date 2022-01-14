@@ -37,9 +37,9 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
       map(&kas, va, va, 0);
     }
   }
-  printf("before set satp\n");
+  //printf("before set satp\n");
   set_satp(kas.ptr);
-  printf("after set satp\n");
+  //printf("after set satp\n");
   vme_enable = 1;
 
   return true;
