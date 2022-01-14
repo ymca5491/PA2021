@@ -67,6 +67,20 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  // for Sv32, the higher 22 bit of PTE is PPN
+  // PPN[1] = PTE[31:20], PPN[0] = PTE[19:10]
+  // VPN[1] = va[31:22] , VPN[0] = PTE[21:12]
+  // prot unused
+  uintptr_t ppn, vpn1, vpn0;
+  PTE *p1 = (PTE *)as->ptr, *p0;
+  ppn = (uintptr_t)pa >> 12;
+  vpn1 = (uintptr_t)va >> 22;
+  vpn0 = ((uintptr_t)va & 0x3ff000) >> 12;
+  if (p1[vpn1] == 0) {
+    p1[vpn1] = (PTE)pgalloc_usr(PGSIZE); 
+  }
+  p0 = (PTE *)p1[vpn1];
+  p0[vpn0] = ppn << 12;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
