@@ -7,6 +7,8 @@ void __am_switch(Context *c);
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
+#define IRQ_TIMER 0x80000007  // for riscv32
+
 Context* __am_irq_handle(Context *c) {
   //printf("%x\n", c->mcause);
   __am_get_cur_as(c);
@@ -20,6 +22,9 @@ Context* __am_irq_handle(Context *c) {
         else {
           ev.event = EVENT_SYSCALL;
         }
+        break;
+      case IRQ_TIMER:
+        ev.event = EVENT_IRQ_TIMER;
         break;
       default: ev.event = EVENT_ERROR; break;
     }
@@ -47,6 +52,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *cp = (Context *)(kstack.end - sizeof(Context));
   cp->mepc = (intptr_t)entry;
+  cp->mstatus = 0x80; // for mret set MIE = MPIE, set MPIE = 1 here;
   cp->gpr[10] = (intptr_t)arg; // a0
   return cp;
 }

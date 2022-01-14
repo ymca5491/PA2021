@@ -8,8 +8,8 @@ typedef struct {
   struct {
     rtlreg_t _32;
   } gpr[0x400];
-
   vaddr_t pc;
+  bool INTR;
 } riscv32_CPU_state;
 
 // decode
