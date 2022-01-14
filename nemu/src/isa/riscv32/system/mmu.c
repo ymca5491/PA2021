@@ -5,6 +5,7 @@
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uintptr_t vpn1, vpn0, offset;
   paddr_t p1 = satp << 12, p0, paddr;
+  printf("root in satp: 0x%x\n", p1);
   offset = vaddr & 0xfff;
   vpn1 = (uintptr_t)vaddr >> 22;
   vpn0 = ((uintptr_t)vaddr & 0x3ff000) >> 12;
