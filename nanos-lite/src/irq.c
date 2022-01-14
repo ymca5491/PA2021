@@ -7,7 +7,7 @@ static Context* do_event(Event e, Context* c) {
     case EVENT_YIELD: c->mepc += 4; return schedule(c);
     case EVENT_SYSCALL: do_syscall(c); c->mepc += 4; break;
     case EVENT_IRQ_TIMER: 
-      Log("Reiceive EVENT_IRQ_TIMER");
+      //Log("Reiceive EVENT_IRQ_TIMER");
       return schedule(c); // irq_time comes after updatepc
     default: panic("Unhandled event ID = %d", e.event);
   }
