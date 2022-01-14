@@ -28,6 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       if ((phdr.p_paddr & 0xfffff000) > vpg) {
         vpg = phdr.p_paddr & 0xfffff000;
         ppg = new_page(1);
+        printf("Mapping 0x%p to 0x%p\n", (void *)vpg, ppg);
         map(&pcb->as, (void *)vpg, ppg, 0);
       }
       offset = phdr.p_paddr & 0xfff;
