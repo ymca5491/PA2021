@@ -24,7 +24,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, &phdr, head.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) >= 0);
-      printf("load paddr = 0x%x, vaddr = 0x%x, memsz = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_memsz);
+      //printf("load paddr = 0x%x, vaddr = 0x%x, memsz = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_memsz);
       // sections are aligned with page size
       nrpg = ((phdr.p_paddr + phdr.p_memsz - 1) >> 12) - (phdr.p_paddr >> 12) + 1;
       vpg = phdr.p_paddr & 0xfffff000;
@@ -64,7 +64,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   for (int i = 0; i < 8; i++) {
     pa -= PGSIZE;
     va -= PGSIZE;
-    printf("Mapping 0x%p to 0x%p\n", va, pa);
+    //printf("Mapping 0x%p to 0x%p\n", va, pa);
     map(&pcb->as, va, pa, 0);
   }
   
