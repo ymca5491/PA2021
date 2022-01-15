@@ -42,6 +42,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       }
     }
   }
+  printf("max_brk initialized as 0x%x\n", pcb->max_brk);
   fs_close(fd);
   return head.e_entry;
 }
