@@ -24,7 +24,7 @@ void do_syscall(Context *c) {
 #endif
   switch (a[0]) {
     case SYS_yield: yield(); ret = 0; break;
-    case SYS_exit: halt(0);
+    case SYS_exit: halt(0); break;
       //sys_execve("/bin/nterm", empty, empty); ret = a[1]; break;// halt(a[1]); break;
     case SYS_open:  ret = fs_open((char*)a[1], a[2], a[3]); break;
     case SYS_read:  ret = fs_read(a[1], (void *)a[2], a[3]); break;
