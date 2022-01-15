@@ -74,7 +74,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // PPN[1] = PTE[31:20], PPN[0] = PTE[19:10]
   // VPN[1] = va[31:22] , VPN[0] = PTE[21:12]
   // prot unused
-  printf("Map 0x%p to 0x%p\n", va, pa);
+  //printf("Map 0x%p to 0x%p\n", va, pa);
   uintptr_t ppn, vpn1, vpn0;
   PTE *p1 = (PTE *)as->ptr, *p0;
   ppn = (uintptr_t)pa >> 12;
