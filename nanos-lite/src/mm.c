@@ -32,13 +32,11 @@ int mm_brk(uintptr_t brk) {
   brk = (brk - 1) & 0xfffff000;
   if (brk > last_brk) {
     nrpg = (brk - last_brk) >> 12;
-    //last_brk += PGSIZE;
+    printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk_t, nrpg);
     uintptr_t ppg = (uintptr_t)new_page(nrpg);
     for (int i = 0; i < nrpg; i++) {
       //printf("Mapping 0x%p to 0x%p\n", last_brk, ppg);
       map(&current->as, (void *)last_brk + (i+1)*PGSIZE, (void *)ppg + i*PGSIZE, 0);
-      //last_brk += PGSIZE;
-      //ppg += PGSIZE;
     }
   }
   printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk_t, nrpg);
