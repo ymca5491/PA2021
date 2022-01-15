@@ -45,18 +45,14 @@ void init_proc() {
 
 }
 
+extern bool keyboard[];
 Context* schedule(Context *prev) {
   static int counter = 0;
   static PCB *fg_pcb = &pcb[1];
-  if (counter == 0) {
-    AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
-    if (ev.keydown) {
-      switch (ev.keycode) {
-        case 2: fg_pcb = &pcb[1]; break;
-        case 3: fg_pcb = &pcb[2]; break;
-        case 4: fg_pcb = &pcb[3]; break;
-        default:                  break;
-      }
+  for (int i = 1; i < 4; i++) {
+    if (keyboard[i+1] == 1) {
+      fg_pcb = &pcb[i];
+      break;
     }
   }
   // save the context pointer
