@@ -26,11 +26,11 @@ void free_page(void *p) {
 int mm_brk(uintptr_t brk) {
   uintptr_t last_brk = (current->max_brk - 1) & 0xfffff000;
   if (brk > current->max_brk) current->max_brk = brk;
-  uintptr_t old = brk;
+  //uintptr_t old = brk;
   brk = (brk - 1) & 0xfffff000;
   if (brk > last_brk) {
-    int nrpg = (brk - last_brk) >> 12;
-    printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk, nrpg);
+    int nrpg = ((brk - last_brk) >> 12) + 1;
+    //printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk, nrpg);
     last_brk += PGSIZE;
     uintptr_t ppg = (uintptr_t)new_page(nrpg);
     for (int i = 0; i < nrpg; i++) {
