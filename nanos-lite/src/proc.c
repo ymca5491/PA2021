@@ -32,10 +32,11 @@ void init_proc() {
 
   char *empty[] = {NULL};
   char *argv_pal[] = {"/bin/pal","--skip", NULL};
-  //context_kload(&pcb[0], hello_fun, NULL);
+  context_uload(&pcb[0], "/bin/hello", NULL, NULL);
   //context_uload(&pcb[1], "/bin/nterm", empty, empty);
-  context_uload(&pcb[0], argv_pal[0], argv_pal, empty);
-  context_uload(&pcb[1], "/bin/bird", NULL, NULL);
+  context_uload(&pcb[1], argv_pal[0], argv_pal, empty);
+  context_uload(&pcb[2], "/bin/bird", NULL, NULL);
+  context_uload(&pcb[3], "/bin/nslider", NULL, NULL);
   //context_uload(&pcb[1], "/bin/menu", empty, empty);
   switch_boot_pcb();
 
@@ -46,12 +47,23 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   static int counter = 0;
+  static PCB *fg_pcb = &pcb[1];
+
+  AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
+  if (ev.keydown) {
+    switch (ev.keycode) {
+      case 2: fg_pcb = &pcb[1]; break;
+      case 3: fg_pcb = &pcb[2]; break;
+      case 4: fg_pcb = &pcb[3]; break;
+      default:                  break;
+    }
+  }
   // save the context pointer
   current->cp = prev;
   // always select pcb[0] as the new process
   //current = &pcb[0];
-  current = (counter == 0 ? &pcb[0] : &pcb[1]);
-  counter++; counter %= 2;
+  current = (counter == 0 ? &pcb[0] : fg_pcb);
+  counter++; counter %= 100;
 
   // then return the new context
   return current->cp;
