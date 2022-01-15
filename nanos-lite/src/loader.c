@@ -23,6 +23,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     assert(fs_lseek(fd, head.e_phoff + i*head.e_phentsize, SEEK_SET) >= 0);
     fs_read(fd, &phdr, head.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
+      pcb->max_brk = pcb->max_brk > phdr.p_paddr + phdr.p_memsz - 1 ? pcb->max_brk : phdr.p_paddr + phdr.p_memsz - 1;
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) >= 0);
       printf("load paddr = 0x%x, vaddr = 0x%x, memsz = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_memsz);
       // sections are aligned with page size
@@ -39,7 +40,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       for (char *p = (char *)pa + phdr.p_filesz; p != (char *)pa + phdr.p_memsz; p++) {
         *p = 0;
       }
-      pcb->max_brk = pcb->max_brk > phdr.p_paddr + phdr.p_memsz - 1 ? pcb->max_brk : phdr.p_paddr + phdr.p_memsz - 1;
     }
   }
   fs_close(fd);
