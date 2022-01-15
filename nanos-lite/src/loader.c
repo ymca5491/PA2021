@@ -63,7 +63,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 		fs_lseek(fd, off, SEEK_SET);
 		fs_read(fd, &ph, header.e_phentsize);
 		off += header.e_phentsize;
-		printf("vaddr=%p\tpaddr=%\tfilesz=%p\tmemsz=%p\n", ph.p_vaddr, ph.p_paddr, ph.p_filesz, ph.p_memsz);
+		printf("vaddr=%p\tpaddr=%p\tfilesz=%p\tmemsz=%p\n", ph.p_vaddr, ph.p_paddr, ph.p_filesz, ph.p_memsz);
 		if(ph.p_type == PT_LOAD){
 			int tot_num = 1 + (((ph.p_vaddr + ph.p_memsz) - (ph.p_vaddr & ~0xfff)) >> 12);
 			uintptr_t load_begin  = (uintptr_t)new_page(tot_num);
