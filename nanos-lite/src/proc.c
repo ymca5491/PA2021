@@ -32,8 +32,9 @@ void init_proc() {
 
   char *empty[] = {NULL};
   char *argv_pal[] = {"/bin/pal","--skip", NULL};
-  context_uload(&pcb[0], "/bin/hello", NULL, NULL);
-  //context_uload(&pcb[1], "/bin/nterm", empty, empty);
+  int argk = -1;
+  context_kload(&pcb[0], hello_fun, &argk);
+  //context_uload(&pcb[0], "/bin/hello", NULL, NULL);
   context_uload(&pcb[1], argv_pal[0], argv_pal, empty);
   context_uload(&pcb[2], "/bin/bird", NULL, NULL);
   context_uload(&pcb[3], "/bin/nterm", NULL, NULL);
