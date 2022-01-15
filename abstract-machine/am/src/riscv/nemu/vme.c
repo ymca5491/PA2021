@@ -84,6 +84,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     p1[vpn1] = (PTE)pgalloc_usr(PGSIZE) | 0x1;
   }
   p0 = (PTE *)(p1[vpn1] & 0xfffffffe);
+  assert(p0[vpn0] == 0);
   p0[vpn0] = ppn << 12 | 0x1;
 }
 
