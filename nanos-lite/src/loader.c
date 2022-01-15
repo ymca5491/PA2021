@@ -69,25 +69,28 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     map(&pcb->as, va, pa, 0);
   }
   
-  char *buf[64];
+  char *buf[2048];
   uint32_t c = 0, size;
-  int argc;
+  int argc = 0;
 
-  for (int i = 0; argv[i] != NULL; i++) {
-    //printf("argv[%d] = %s", i, argv[i]);
-    size = strlen(argv[i]) + 1;
-    st_top -= size;
-    buf[c++] = memcpy(st_top, argv[i], size);
+  if (argv != NULL) {
+    for (int i = 0; argv[i] != NULL; i++) {
+      //printf("argv[%d] = %s", i, argv[i]);
+      size = strlen(argv[i]) + 1;
+      st_top -= size;
+      buf[c++] = memcpy(st_top, argv[i], size);
+    }
+    argc = c;
   }
-  argc = c;
   buf[c++] = NULL;
   //printf("Pass argv\n");
-
-  for (int i = 0; envp[i] != NULL; i++) {
-    //printf("envp[%d] = %s\n", i, envp[i]);
-    size = strlen(envp[i]) + 1;
-    st_top -= size;
-    buf[c++] = memcpy(st_top, envp[i], size);
+  if (envp != NULL) {
+    for (int i = 0; envp[i] != NULL; i++) {
+      //printf("envp[%d] = %s\n", i, envp[i]);
+      size = strlen(envp[i]) + 1;
+      st_top -= size;
+      buf[c++] = memcpy(st_top, envp[i], size);
+    }
   }
   buf[c++] = NULL;
 
