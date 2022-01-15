@@ -146,7 +146,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           length++;
           fmt++;
           break;
-        default: panic("Not implemented");
+        default: putch(*fmt); panic("Not implemented");
       }
 
     }
