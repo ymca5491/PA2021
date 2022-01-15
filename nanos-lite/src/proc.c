@@ -31,14 +31,12 @@ void init_proc() {
   // load program here
 
   char *empty[] = {NULL};
-  char *argv_nterm[] = {"/bin/nterm", NULL};
-  //char *argv_exec[] = {"/bin/exec-test", 0, NULL};
   //char *argv_pal[] = {"/bin/pal","--skip", NULL};
-  //char *argv_bird[] = {"/bin/bird", NULL};
   context_kload(&pcb[0], hello_fun, NULL);
-  context_uload(&pcb[1], argv_nterm[0], argv_nterm, empty);
- // context_uload(&pcb[1], argv_pal[0], argv_pal, empty);
-  //context_uload(&pcb[1], argv_bird[0], argv_bird, empty);
+  //context_uload(&pcb[1], "/bin/nterm", empty, empty);
+  //context_uload(&pcb[1], argv_pal[0], argv_pal, empty);
+  //context_uload(&pcb[1], "/bin/bird", empty, empty);
+  context_uload(&pcb[1], "/bin/menu", empty, empty);
   switch_boot_pcb();
 
 
