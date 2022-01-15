@@ -36,7 +36,7 @@ void init_proc() {
   //context_uload(&pcb[1], "/bin/nterm", empty, empty);
   context_uload(&pcb[1], argv_pal[0], argv_pal, empty);
   context_uload(&pcb[2], "/bin/bird", NULL, NULL);
-  context_uload(&pcb[3], "/bin/nslider", NULL, NULL);
+  context_uload(&pcb[3], "/bin/nterm", NULL, NULL);
   //context_uload(&pcb[1], "/bin/menu", empty, empty);
   switch_boot_pcb();
 
