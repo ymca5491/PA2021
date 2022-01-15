@@ -27,6 +27,7 @@ int mm_brk(uintptr_t brk) {
   int nrpg = 0;
   uintptr_t last_brk = (current->max_brk - 1) & 0xfffff000;
   uintptr_t old = current->max_brk;
+  uintptr_t brk_t = brk;
   if (brk > current->max_brk) current->max_brk = brk;
   brk = (brk - 1) & 0xfffff000;
   if (brk > last_brk) {
@@ -40,7 +41,7 @@ int mm_brk(uintptr_t brk) {
       //ppg += PGSIZE;
     }
   }
-  printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk, nrpg);
+  printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk_t, nrpg);
   return 0;
 }
 
