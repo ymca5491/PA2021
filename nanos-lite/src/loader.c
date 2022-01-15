@@ -24,7 +24,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, &phdr, head.e_phentsize);
     if (phdr.p_type == PT_LOAD) {
       assert(fs_lseek(fd, phdr.p_offset, SEEK_SET) >= 0);
-      //printf("load paddr = 0x%x, vaddr = 0x%x, memsz = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_memsz);
+      printf("load paddr = 0x%x, vaddr = 0x%x, memsz = 0x%x\n", phdr.p_paddr, phdr.p_vaddr, phdr.p_memsz);
       // sections are aligned with page size
       nrpg = ((phdr.p_paddr + phdr.p_memsz - 1) >> 12) - (phdr.p_paddr >> 12) + 1;
       vpg = phdr.p_paddr & 0xfffff000;
