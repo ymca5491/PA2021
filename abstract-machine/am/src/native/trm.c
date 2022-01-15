@@ -14,7 +14,6 @@ void putch(char ch) {
 }
 
 void halt(int code) {
-//  printf("Exit (%d)\n", code);
   const char *fmt = "Exit code = 40h\n";
   for (const char *p = fmt; *p; p++) {
     char ch = *p;
@@ -23,10 +22,7 @@ void halt(int code) {
     }
     putch(ch);
   }
-
-
-
-__am_exit_platform(code);
+  __am_exit_platform(code);
   putstr("Should not reach here!\n");
   while (1);
 }

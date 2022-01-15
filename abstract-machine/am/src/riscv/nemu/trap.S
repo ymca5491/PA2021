@@ -50,19 +50,13 @@ __am_asm_trap:
   mv a0, sp
   jal __am_irq_handle
 
-  # wk 4.1
+  # load new context
   mv sp, a0
-  # wk 4.1
 
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
-
-  # wk pc+4
-  # addi t2, t2, 4	
   csrw mepc, t2
-  # addi t2, t2, -4	
-  # wk pc+4
 
   MAP(REGS, POP)
 
