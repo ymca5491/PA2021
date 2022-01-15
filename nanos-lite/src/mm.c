@@ -32,6 +32,7 @@ int mm_brk(uintptr_t brk) {
     last_brk += PGSIZE;
     uintptr_t ppg = (uintptr_t)new_page(nrpg);
     for (int i = 0; i < nrpg; i++) {
+      printf("Mapping 0x%p to 0x%p\n", last_brk, ppg);
       map(&current->as, (void *)last_brk, (void *)ppg, 0);
       last_brk += PGSIZE;
       ppg += PGSIZE;
