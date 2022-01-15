@@ -30,11 +30,11 @@ void init_proc() {
 
   // load program here
 
-  //char *empty[] = {NULL};
-  //char *argv_pal[] = {"/bin/pal","--skip", NULL};
-  context_kload(&pcb[0], hello_fun, NULL);
+  char *empty[] = {NULL};
+  char *argv_pal[] = {"/bin/pal","--skip", NULL};
+  //context_kload(&pcb[0], hello_fun, NULL);
   //context_uload(&pcb[1], "/bin/nterm", empty, empty);
-  //context_uload(&pcb[1], argv_pal[0], argv_pal, empty);
+  context_uload(&pcb[0], argv_pal[0], argv_pal, empty);
   context_uload(&pcb[1], "/bin/bird", NULL, NULL);
   //context_uload(&pcb[1], "/bin/menu", empty, empty);
   switch_boot_pcb();
@@ -51,7 +51,7 @@ Context* schedule(Context *prev) {
   // always select pcb[0] as the new process
   //current = &pcb[0];
   current = (counter == 0 ? &pcb[0] : &pcb[1]);
-  counter++; counter %= 100;
+  counter++; counter %= 2;
 
   // then return the new context
   return current->cp;
