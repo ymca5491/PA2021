@@ -64,6 +64,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   for (int i = 0; i < 8; i++) {
     pa -= PGSIZE;
     va -= PGSIZE;
+    printf("Map 0x%p to 0x%p\n", va, pa);
     map(&pcb->as, va, pa, 0);
   }
   
