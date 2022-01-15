@@ -39,7 +39,7 @@ int mm_brk(uintptr_t brk) {
       map(&current->as, (void *)last_brk + (i+1)*PGSIZE, (void *)ppg + i*PGSIZE, 0);
     }
   }
-  printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk_t, nrpg);
+  //printf("last_brk: 0x%x max_brk: 0x%x new_brk: 0x%x nrpg: %d \n", last_brk, old, brk_t, nrpg);
   return 0;
 }
 
