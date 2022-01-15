@@ -3,6 +3,7 @@ void do_syscall(Context *c);
 Context* schedule(Context *prev) ;
 
 static Context* do_event(Event e, Context* c) {
+	printf("EVENT_IRQ_TIMER = %d", EVENT_IRQ_TIMER);
 	/* printf("do_event:e.event=%p\n", e.event); */
 	switch (e.event) {
 		case EVENT_NULL:
