@@ -48,14 +48,15 @@ void init_proc() {
 Context* schedule(Context *prev) {
   static int counter = 0;
   static PCB *fg_pcb = &pcb[1];
-
-  AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
-  if (ev.keydown) {
-    switch (ev.keycode) {
-      case 2: fg_pcb = &pcb[1]; break;
-      case 3: fg_pcb = &pcb[2]; break;
-      case 4: fg_pcb = &pcb[3]; break;
-      default:                  break;
+  if (counter == 0) {
+    AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
+    if (ev.keydown) {
+      switch (ev.keycode) {
+        case 2: fg_pcb = &pcb[1]; break;
+        case 3: fg_pcb = &pcb[2]; break;
+        case 4: fg_pcb = &pcb[3]; break;
+        default:                  break;
+      }
     }
   }
   // save the context pointer
