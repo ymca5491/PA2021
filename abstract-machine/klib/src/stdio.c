@@ -146,11 +146,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           length++;
           fmt++;
           break;
-        case 'c':
-          *(out+length) = va_arg(ap, int);
-          length++;
-          fmt++;
-          break;
         default: panic("Not implemented");
       }
 
