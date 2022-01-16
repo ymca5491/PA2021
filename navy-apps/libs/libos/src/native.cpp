@@ -178,6 +178,7 @@ int open(const char *path, int flags, ...) {
 }
 
 ssize_t read(int fd, void *buf, size_t count) {
+	  /* printf("read fd:%d\n",fd);; */
   if (fd == dispinfo_fd) {
     return snprintf((char *)buf, count, "WIDTH: %d\nHEIGHT: %d\n", disp_w, disp_h);
   } else if (fd == evt_fd) {
@@ -212,6 +213,7 @@ ssize_t read(int fd, void *buf, size_t count) {
 }
 
 ssize_t write(int fd, const void *buf, size_t count) {
+	  /* printf("write fd:%d\n",fd);; */
   if (fd == sbctl_fd) {
     // open audio
     const int *args = (const int *)buf;

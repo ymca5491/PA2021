@@ -1,5 +1,4 @@
 #include <am.h>
-#include <stdlib.h>
 
 bool ioe_init() {
   return true;

@@ -1,8 +1,5 @@
 # Makefile for Navy Applications and Libraries
 
-# add support for VME
-VME = 1
-
 ### *Get a more readable version of this Makefile* by `make html` (requires python-markdown)
 html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
@@ -168,9 +165,11 @@ $(CLEAN_ALL):
 	-@$(MAKE) -s -C $@ clean
 .PHONY: clean-all $(CLEAN_ALL)
 
-### Build fsimg and ramdisk for Nanos-lite 
-APPS = nslider menu nterm bird pal busybox
-TESTS = dummy hello
+### Build fsimg and ramdisk for Nanos-lite
+# APPS =  menu nterm busybox pal bird nslider
+APPS = pal nterm  
+# TESTS = dummy hello file-test timer-test  exec-test event-test cpp-test bmp-test 
+TESTS = hello 
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
 	-for t in $^; do $(MAKE) -s -C $(NAVY_HOME)/$$t install; done

@@ -4,11 +4,14 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-  int n = (argc >= 2 ? atoi(argv[1]) : 1);
-  printf("%s: argv[1] = %d at 0x%p\n", argv[0], n, &argc);
+	/* printf("main argc=%d\targv=%p\n", argc, argv); */
+	/* printf("argv[0]=%s\n", argv[0]); */
+	/* printf("argv[1]=%s\n", argv[1]); */
+	int n = (argc >= 2 ? atoi(argv[1]) : 1);
+	printf("%s: argv[1] = %d\n", argv[0], n);
 
-  char buf[16];
-  sprintf(buf, "%d", n + 1);
-  execl(argv[0], argv[0], buf, NULL);
-  return 0;
+	char buf[16];
+	sprintf(buf, "%d", n + 1);
+	execl(argv[0], argv[0], buf, NULL);
+	return 0;
 }
