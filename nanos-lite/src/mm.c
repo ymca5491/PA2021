@@ -6,7 +6,7 @@ static void *pf = NULL;
 void* new_page(size_t nr_page) {
   void *old = pf;
   pf += nr_page * PGSIZE;
-  printf("pf from 0x%p to 0x%p\n", old, pf);
+  //printf("pf from 0x%p to 0x%p\n", old, pf);
   return old;
 }
 
