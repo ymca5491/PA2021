@@ -45,7 +45,7 @@ void do_syscall(Context *c) {
 intptr_t sys_execve(const char *filename, char *const argv[], char *const envp[]){
   if (fs_open(filename, 0, 0) >= 0) {
     context_uload(current, filename, argv, envp);
-    printf("Pass uload\n");
+    //printf("Pass uload\n");
     switch_boot_pcb();
     yield();
     return 0;

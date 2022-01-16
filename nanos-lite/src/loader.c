@@ -70,7 +70,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     map(&pcb->as, va, pa, 0);
   }
   
-  char *buf[2048];
+  static char *buf[2048];
   uint32_t c = 0, size;
   int argc = 0;
 
