@@ -7,31 +7,6 @@ static const uint32_t img [] = {
   0x800002b7,  // lui t0,0x80000
   0x0002a023,  // sw  zero,0(t0)
   0x0002a503,  // lw  a0,0(t0)
-  
-
-
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x800002b7,  // lui t0,0x80000 */
-  /* 0x0002a023,  // sw  zero,0(t0) */
-  /* 0x0002a503,  // lw  a0,0(t0) */
-  /* 0x000fa503,  // wrong instr, wk add for 2.2 */
   0x0000006b,  // nemu_trap
 };
 
@@ -41,16 +16,6 @@ static void restart() {
 
   /* The zero register is always 0. */
   cpu.gpr[0]._32 = 0;
-
-  // wk 2.3
-  /* cpu.mstatus = 0x1800; */
-  cpu.mstatus = 0;
-  // wk 2.3
-  
-  
-  // wk 4.2
-  cpu.satp = 0;
-  // wk 4.2
 }
 
 void init_isa() {

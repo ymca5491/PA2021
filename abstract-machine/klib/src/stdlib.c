@@ -31,7 +31,7 @@ int atoi(const char* nptr) {
 
 char* itoa(long long val, char* str, int base) {
   /* base = 1, 2, ..., 10, 16 */
-  uint8_t buf[64];
+  static uint8_t buf[64];
   int idx = 0;
   char* pStr = str;
   unsigned long val_u;

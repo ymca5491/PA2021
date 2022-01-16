@@ -6,7 +6,7 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 int printf(const char *fmt, ...) {
-  char out[10240];
+  static char out[10240];
   va_list arg;
   va_start(arg, fmt);
   int length = vsprintf(out, fmt, arg);
@@ -143,6 +143,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
         case '%':
           *(out+length) = '%';
+          length++;
+          fmt++;
+          break;
+        case 'c':
+          *(out+length) = va_arg(ap, int);
           length++;
           fmt++;
           break;

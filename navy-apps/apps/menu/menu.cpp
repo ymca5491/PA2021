@@ -36,14 +36,6 @@ struct MenuItem {
   {"dhrystone", "/bin/dhrystone", NULL},
   {"typing-game", "/bin/typing-game", NULL},
   {"ONScripter", "/bin/onscripter", NULL},
-  /* {"bmp-test", "/bin/bmp-test", NULL}, */
-  /* {"cpp-test", "/bin/cpp-test", NULL}, */
-  /* {"event-test", "/bin/event-test", NULL}, */
-  /* {"exec-test", "/bin/exec-test", NULL}, */
-  /* {"file-test", "/bin/file-test", NULL}, */
-  /* {"timer-test", "/bin/timer-test", NULL}, */
-  /* {"hello-test", "/bin/hello-test", NULL}, */
-
 };
 
 #define nitems (sizeof(items) / sizeof(items[0]))
@@ -104,8 +96,8 @@ int main(int argc, char *argv[], char *envp[]) {
       case SDLK_7: i = 7; break;
       case SDLK_8: i = 8; break;
       case SDLK_9: i = 9; break;
-      case SDLK_LEFT: printf("\nprev\n"); prev(); break;
-      case SDLK_RIGHT: printf("\nnext\n"); next(); break;
+      case SDLK_LEFT: prev(); break;
+      case SDLK_RIGHT: next(); break;
     }
 
     if (i != -1 && i <= i_max) {
